@@ -31,4 +31,12 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'slack' => [
+        'client_id' => env('SLACK_CLIENT_ID', null),
+        'secret' => env('SLACK_SECRET', null),
+        'signing_secret' => env('SLACK_SIGNING_SECRET', null),
+        'verification' => env('SLACK_VERIFICATION', null),
+        'redirect_url' => env('SLACK_REDIRECT_URL', null)
+    ]
+
 ];
