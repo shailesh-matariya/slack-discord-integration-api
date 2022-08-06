@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\SettingsController;
+use App\Jobs\SlackSyncJob;
+use App\Models\Account;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,14 +20,15 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/getSlackUrl', [SettingsController::class, 'getSlackUrl']);
+Route::get('/redirect/slack', [SettingsController::class, 'slackCodeHandle']);
+
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
     'verified'
 ])->group(function () {
-    Route::get('/settings', function () {
-        return view('settings');
-    })->name('settings');
+    Route::get('/settings', [SettingsController::class, 'settings'])->name('settings');
 
     Route::get('/branding', function () {
         return view('branding');

@@ -2,17 +2,27 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SlackSyncJob;
+use App\Models\Account;
+use App\Models\User;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 
 class SettingsController extends Controller
 {
-    public function settings()
+    public function settings(): View
     {
+        $account = Auth::user()->account;
+        $slackUrl = $this->getSlackUrl();
+        $discordUrl = $this->getDiscordUrl();
 
+        return view('settings', compact('account', 'slackUrl', 'discordUrl'));
     }
 
-    public function getSlackUrl()
+    private function getSlackUrl(): string
     {
         $scopes = implode(",", [
             'channels:history',
@@ -34,11 +44,10 @@ class SettingsController extends Controller
         $redirectUrl = config('services.slack.redirect_url');
         $state = 'patel.shailesh987@gmail.com' . '-' . bcrypt(1);
 
-        $url = "https://slack.com/oauth/authorize?client_id={$slackClientId}&scope={$scopes}&user_scope={$userScopes}&redirect_uri={$redirectUrl}&granular_bot_scope=1&single_channel=0&install_redirect=&tracked=1&state={$state}";
-        echo $url;
+        return "https://slack.com/oauth/authorize?client_id={$slackClientId}&scope={$scopes}&user_scope={$userScopes}&redirect_uri={$redirectUrl}&granular_bot_scope=1&single_channel=0&install_redirect=&tracked=1&state={$state}";
     }
 
-    public function slackCodeHandle(Request $request)
+    public function slackCodeHandle(Request $request): RedirectResponse
     {
         $url = 'https://slack.com/api/oauth.v2.access';
 
@@ -51,12 +60,35 @@ class SettingsController extends Controller
 
         $response = json_decode($response->body());
 
-        //https://api.slack.com/legacy/oauth
-        //https://api.slack.com/methods/oauth.access
-        dd($response);
+        $user = User::first(); // Auth::user();
+        $account = $user->account;
+
+        if ($account) {
+            return redirect(route('settings'));
+        }
+
+        $account = new Account();
+        $account->user()->associate($user);
+        $account->platform = 'slack';
+        $account->team_id = $response->team->id;
+        $account->workspace = $response->team->name;
+        $account->app_id = $response->app_id;
+        $account->auth_user = $response->authed_user->id;
+        $account->user_access_token = $response->authed_user->access_token;
+        $account->bot_access_token = $response->access_token;
+        $account->bot_user = $response->bot_user_id;
+        $account->bot_scope = $response->scope;
+        $account->user_scope = $response->authed_user->scope;
+        $account->save();
+
+        dispatch(new SlackSyncJob($account));
+
+
+        return redirect(route('settings'));
     }
 
-    public function getDiscordUrl()
+    public function getDiscordUrl(): string
     {
+        return '';
     }
 }

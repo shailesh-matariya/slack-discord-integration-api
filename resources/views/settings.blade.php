@@ -12,8 +12,11 @@
 										<div class="grow">
 											<h3 class="text-lg leading-6 font-medium text-gray-900">
 												Slack integration
+												@if ($account)
 												<span class="text-gray-300"> | </span>
-												Error
+												<svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="circle-check" class="svg-inline--fa fa-circle-check h-5 w-5 mr-1 inline"
+													 role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" color="green"><path fill="currentColor" d="M0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256zM371.8 211.8C382.7 200.9 382.7 183.1 371.8 172.2C360.9 161.3 343.1 161.3 332.2 172.2L224 280.4L179.8 236.2C168.9 225.3 151.1 225.3 140.2 236.2C129.3 247.1 129.3 264.9 140.2 275.8L204.2 339.8C215.1 350.7 232.9 350.7 243.8 339.8L371.8 211.8z"></path></svg>	Done
+												@endif
 											</h3>
 											<div class="mt-2 sm:flex sm:items-start sm:justify-between">
 												<div class="max-w-xl text-sm text-gray-500">
@@ -23,7 +26,8 @@
 										</div>
 
 										<div class="flex flex-col items-center gap-2">
-											<div class="flex rounded-md border p-2 justify-around border-gray-300 text-base">
+											@if (! $account || $account->platform === 'slack')
+											<a href="{{ $slackUrl }}" class="flex rounded-md border p-2 justify-around border-gray-300 text-base">
 												<div class="flex gap-2 items-center">
 													<svg width="20" height="20" viewBox="0 0 54 54" xmlns="http://www.w3.org/2000/svg">
 														<g fill="none" fill-rule="evenodd">
@@ -33,9 +37,34 @@
 															<path d="M0 34.249a5.381 5.381 0 0 0 5.376 5.386 5.381 5.381 0 0 0 5.376-5.386v-5.387H5.376A5.381 5.381 0 0 0 0 34.25m14.336-.001v14.364A5.381 5.381 0 0 0 19.712 54a5.381 5.381 0 0 0 5.376-5.387V34.25a5.381 5.381 0 0 0-5.376-5.387 5.381 5.381 0 0 0-5.376 5.387" fill="#E01E5A"></path>
 														</g>
 													</svg>
+													@if (! $account)
 													<p class="whitespace-nowrap">Connect to Slack</p>
+													@else
+													<p class="whitespace-nowrap">Reconnect to Slack</p>
+													@endif
 												</div>
-											</div>
+											</a>
+											@endif
+
+											@if (! $account || $account->platform === 'discord')
+											<a href="{{ $discordUrl }}" class="flex rounded-md border p-2 justify-around border-gray-300 text-base">
+												<div class="flex gap-2 items-center">
+													<svg width="20" height="20" viewBox="0 0 54 54" xmlns="http://www.w3.org/2000/svg">
+														<g fill="none" fill-rule="evenodd">
+															<path d="M19.712.133a5.381 5.381 0 0 0-5.376 5.387 5.381 5.381 0 0 0 5.376 5.386h5.376V5.52A5.381 5.381 0 0 0 19.712.133m0 14.365H5.376A5.381 5.381 0 0 0 0 19.884a5.381 5.381 0 0 0 5.376 5.387h14.336a5.381 5.381 0 0 0 5.376-5.387 5.381 5.381 0 0 0-5.376-5.386" fill="#36C5F0"></path>
+															<path d="M53.76 19.884a5.381 5.381 0 0 0-5.376-5.386 5.381 5.381 0 0 0-5.376 5.386v5.387h5.376a5.381 5.381 0 0 0 5.376-5.387m-14.336 0V5.52A5.381 5.381 0 0 0 34.048.133a5.381 5.381 0 0 0-5.376 5.387v14.364a5.381 5.381 0 0 0 5.376 5.387 5.381 5.381 0 0 0 5.376-5.387" fill="#2EB67D"></path>
+															<path d="M34.048 54a5.381 5.381 0 0 0 5.376-5.387 5.381 5.381 0 0 0-5.376-5.386h-5.376v5.386A5.381 5.381 0 0 0 34.048 54m0-14.365h14.336a5.381 5.381 0 0 0 5.376-5.386 5.381 5.381 0 0 0-5.376-5.387H34.048a5.381 5.381 0 0 0-5.376 5.387 5.381 5.381 0 0 0 5.376 5.386" fill="#ECB22E"></path>
+															<path d="M0 34.249a5.381 5.381 0 0 0 5.376 5.386 5.381 5.381 0 0 0 5.376-5.386v-5.387H5.376A5.381 5.381 0 0 0 0 34.25m14.336-.001v14.364A5.381 5.381 0 0 0 19.712 54a5.381 5.381 0 0 0 5.376-5.387V34.25a5.381 5.381 0 0 0-5.376-5.387 5.381 5.381 0 0 0-5.376 5.387" fill="#E01E5A"></path>
+														</g>
+													</svg>
+													@if (! $account)
+														<p class="whitespace-nowrap">Connect to Discord</p>
+													@else
+														<p class="whitespace-nowrap">Reconnect to Discord</p>
+													@endif
+												</div>
+											</a>
+											@endif
 										</div>
 									</div>
 								</div>

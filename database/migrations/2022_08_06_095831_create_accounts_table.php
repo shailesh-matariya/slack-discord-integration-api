@@ -25,7 +25,8 @@ return new class extends Migration
             $table->string('user_access_token')->nullable();
             $table->string('bot_user')->nullable();
             $table->string('bot_access_token')->nullable();
-            $table->string('scope', 2000)->nullable();
+            $table->string('bot_scope', 2000)->nullable();
+            $table->string('user_scope', 2000)->nullable();
 
             $table->string('url')->nullable();
             $table->boolean('is_custom_url')->default(false);
