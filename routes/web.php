@@ -17,9 +17,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    $account = Account::first();
-
-    dispatch(new SlackSyncJob($account));
+//    $account = Account::first();
+//
+//    dispatch(new SlackSyncJob($account));
 
     return view('welcome');
 });
