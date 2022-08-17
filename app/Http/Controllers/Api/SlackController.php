@@ -8,6 +8,7 @@ use App\Models\AccountUser;
 use App\Models\Message;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 
 class SlackController extends Controller
 {
@@ -25,6 +26,13 @@ class SlackController extends Controller
     public function getUsers(Request $request): \Illuminate\Http\JsonResponse
     {
         $users =  AccountUser::query()->get();
+        foreach ($users as $user) {
+            if ($user->account->is_anonymize) {
+                $user->name = fake()->name;
+                $user->profile = 'https://ui-avatars.com/api/?name=' . urlencode($user->name);
+            }
+        }
+
         return response()->json([
             'status' => true,
             'user_collection' => $users

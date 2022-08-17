@@ -37,4 +37,7 @@ Route::middleware([
     Route::get('/plans', function () {
         return view('plans');
     })->name('plans');
+    Route::post('/set-channel-visibility', [SettingsController::class, 'setChannelVisibility'])->name('setChannelVisibility')->withoutMiddleware(\App\Http\Middleware\VerifyCsrfToken::class);
+    Route::post('/set-anonymize', [SettingsController::class, 'setUserAnonymize'])->name('setUserAnonymize')->withoutMiddleware(\App\Http\Middleware\VerifyCsrfToken::class);
+    Route::post('/set-default-channel', [SettingsController::class, 'setDefaultChannel'])->name('setDefaultChannel')->withoutMiddleware(\App\Http\Middleware\VerifyCsrfToken::class);
 });

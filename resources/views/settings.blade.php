@@ -92,9 +92,15 @@
 										</div>
 
 										<div class="self-center">
-											<div class="mt-5 sm:mt-0 sm:ml-6 sm:flex-shrink-0 sm:flex sm:items-center">
-												<button class="bg-gray-200 relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-300" id="headlessui-switch-3" role="switch" type="button" tabindex="0" aria-checked="false" aria-labelledby="headlessui-label-1" aria-describedby="headlessui-description-2">
-													<span class="translate-x-0 inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200"></span>
+											<div class="mt-5 sm:mt-0 sm:ml-6 sm:flex-shrink-0 sm:flex sm:items-center" x-data="{ open: {{$account->is_anonymize}} }" x-init="$watch('open', (value,
+											oldValue) =>
+											setUserAnonymize(value))">
+												<button @click="open = !open" x-bind:class="open ? 'bg-gray-700' : 'bg-gray-200'" class="relative inline-flex flex-shrink-0 h-6 w-11 border-2
+												border-transparent rounded-full cursor-pointer
+												transition-colors
+												ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300" id="headlessui-switch-3" role="switch" type="button"
+														tabindex="0" aria-checked="false" aria-labelledby="headlessui-label-1" aria-describedby="headlessui-description-2">
+													<span x-bind:class="open ? 'translate-x-5' : 'translate-x-0'" class="inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200"></span>
 												</button>
 											</div>
 										</div>
@@ -114,11 +120,11 @@
 										</div>
 
 										<div class="self-center">
-											<label class="sr-only" id="headlessui-listbox-label-4">Change published status</label>
-											<div class="relative">
-												<div class="inline-flex shadow-sm rounded-md divide-x divide-blue-700">
-													<div class="relative z-0 inline-flex shadow-sm rounded-md divide-x divide-blue-700">
-														<div class="relative inline-flex items-center bg-blue-700 py-2 pl-3 pr-4 border border-transparent rounded-l-md shadow-sm text-white">
+											<label class="sr-only">Change published status</label>
+											<div class="relative" x-data="{dropdownMenu: false, buttonLabel: '{{$defaultChannel ? $defaultChannel->name : 'choose one' }}'}">
+												<div class="inline-flex shadow-sm rounded-md divide-x divide-gray-700">
+													<div class="relative z-0 inline-flex shadow-sm rounded-md divide-x divide-gray-700">
+														<div class="relative inline-flex items-center bg-gray-700 py-2 pl-3 pr-4 border border-transparent rounded-l-md shadow-sm text-white">
 															<svg width="14px" height="14px" viewBox="0 0 54 54" xmlns="http://www.w3.org/2000/svg">
 																<g fill="none" fill-rule="evenodd">
 																	<path d="M19.712.133a5.381 5.381 0 0 0-5.376 5.387 5.381 5.381 0 0 0 5.376 5.386h5.376V5.52A5.381 5.381 0 0 0 19.712.133m0 14.365H5.376A5.381 5.381 0 0 0 0 19.884a5.381 5.381 0 0 0 5.376 5.387h14.336a5.381 5.381 0 0 0 5.376-5.387 5.381 5.381 0 0 0-5.376-5.386" fill="#eee"></path>
@@ -127,9 +133,12 @@
 																	<path d="M0 34.249a5.381 5.381 0 0 0 5.376 5.386 5.381 5.381 0 0 0 5.376-5.386v-5.387H5.376A5.381 5.381 0 0 0 0 34.25m14.336-.001v14.364A5.381 5.381 0 0 0 19.712 54a5.381 5.381 0 0 0 5.376-5.387V34.25a5.381 5.381 0 0 0-5.376-5.387 5.381 5.381 0 0 0-5.376 5.387" fill="#eee"></path>
 																</g>
 															</svg>
-															<p class="ml-2.5 text-sm font-medium">choose one</p>
+															<p class="ml-2.5 text-sm font-medium" x-text="buttonLabel"></p>
 														</div>
-														<button class="relative inline-flex items-center bg-blue-700 p-2 rounded-l-none rounded-r-md text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:z-10 focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-blue-300" id="headlessui-listbox-button-5" type="button" aria-haspopup="true" aria-expanded="false" aria-labelledby="headlessui-listbox-label-4 headlessui-listbox-button-5">
+
+														<!-- Dropdown toggle button -->
+														<button class="relative inline-flex items-center bg-gray-700 p-2 rounded-l-none rounded-r-md text-sm font-medium text-white hover:bg-gray-800
+														focus:outline-none focus:z-10" type="button" @click="dropdownMenu = ! dropdownMenu">
 															<span class="sr-only">Change default channel</span>
 															<svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="chevron-down" class="svg-inline--fa fa-chevron-down h-4 w-5
 															text-white" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
@@ -138,6 +147,27 @@
 														</button>
 													</div>
 												</div>
+												<ul x-show="dropdownMenu" class="origin-top-right absolute z-10 right-0 mt-2 w-72 rounded-md shadow-lg overflow-hidden bg-white ring-1 ring-black
+												ring-opacity-5 focus:outline-none" x-data="{channels: {{$channels}}, defaultChannelId: {{$defaultChannel->id}}}" @click.outside="dropdownMenu=!dropdownMenu">
+													<template x-for="channel in channels">
+														<li class="text-gray-900 cursor-default hover:bg-gray-100 relative p-2 text-sm" role="option" tabindex="-1" @click="setDefaultChannel(channel);
+														 buttonLabel=channel.name;defaultChannelId=channel.id; dropdownMenu=!dropdownMenu">
+															<div class="flex flex-col">
+																<div class="flex justify-between">
+																	<p :class="{'font-semibold': defaultChannelId === channel.id, 'font-normal': defaultChannelId !== channel.id}"
+																	   x-text="channel.name"></p>
+																	<span class="text-green-600" x-show="defaultChannelId === channel.id">
+                    													<svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="check" class="svg-inline--fa fa-check h-5 w-5"
+																		 role="img"
+																		 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                        													<path fill="currentColor" d="M438.6 105.4C451.1 117.9 451.1 138.1 438.6 150.6L182.6 406.6C170.1 419.1 149.9 419.1 137.4 406.6L9.372 278.6C-3.124 266.1-3.124 245.9 9.372 233.4C21.87 220.9 42.13 220.9 54.63 233.4L159.1 338.7L393.4 105.4C405.9 92.88 426.1 92.88 438.6 105.4H438.6z"></path>
+                    													</svg>
+                													</span>
+																</div>
+															</div>
+														</li>
+													</template>
+												</ul>
 											</div>
 										</div>
 									</div>
@@ -147,83 +177,144 @@
 								<div class="px-4 py-5 sm:p-6">
 									<div class="flex">
 										<div class="grow">
-											<h3 class="text-lg leading-6 font-medium text-gray-900">Channels visibility</h3>
+											<h3 class="text-lg leading-6 font-medium text-gray-700">Channels visibility</h3>
 											<div class="mt-2 sm:flex sm:items-start sm:justify-between">
 												<div class="max-w-xl text-sm text-gray-500">
 													<p>Pick which channels to display or hide.</p>
 												</div>
 											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="bg-white">
-								<div class="px-4 py-5 sm:p-6">
-									<div class="flex">
-										<div class="grow">
-											<h3 class="text-lg leading-6 font-medium text-gray-900">Home URL</h3>
-											<div class="mt-2 sm:flex sm:items-start sm:justify-between">
-												<div class="max-w-xl text-sm text-gray-500">
-													<p>Link to your home page.</p>
+											<div class="mt-2 sm:flex sm:items-end sm:justify-between">
+												<div class="flex-grow" x-data="{channels: {{$channels}}}">
+													<template x-for="channel in channels">
+														<div class="flex items-center m-1">
+															<button @click="setChannelVisibility(channel);channel.is_visible = !channel.is_visible"
+																	x-bind:class="channel.is_visible ?	'bg-gray-700' :	'bg-gray-200'"
+																	class="relative inline-flex	flex-shrink-0 h-6 w-11 border-2	border-transparent rounded-full cursor-pointer transition-colors
+																	ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 mr-3"
+																	id="headlessui-switch-6" role="switch" type="button" tabindex="0" aria-checked="false" aria-labelledby="headlessui-label-7">
+																<span x-bind:class="channel.is_visible ? 'translate-x-5' : 'translate-x-0'" aria-hidden="true" class="pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0
+																 transition ease-in-out duration-200"></span>
+															</button>
+															<span x-bind:class="channel.is_visible ? 'text-gray-900' : 'text-gray-400 line-through'" class="text-sm font-medium"
+																  id="headlessui-label-7" x-text="channel.name"></span>
+															<input type="hidden" x-bind:name="channel.name" value="false">
+														</div>
+													</template>
 												</div>
 											</div>
 										</div>
 									</div>
-									<div class="mt-3 relative rounded-md shadow-sm">
-										<input type="text"
-											   name="home-url"
-											   id="home-url"
-											   class="focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
-											   placeholder="https://yourwebsite.com">
-									</div>
 								</div>
 							</div>
-							<div class="bg-white">
-								<div class="px-4 py-5 sm:p-6">
-									<div class="flex">
-										<div class="grow">
-											<h3 class="text-lg leading-6 font-medium text-gray-900">Docs URL</h3>
-											<div class="mt-2 sm:flex sm:items-start sm:justify-between">
-												<div class="max-w-xl text-sm text-gray-500">
-													<p>Link to your documentation.</p>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="mt-3 relative rounded-md shadow-sm">
-										<input type="text"
-											   name="docs-url"
-											   id="docs-url"
-											   class="focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
-											   placeholder="https://docs.yourwebsite.com">
-									</div>
-								</div>
-							</div>
-							<div class="bg-white">
-								<div class="px-4 py-5 sm:p-6">
-									<div class="flex">
-										<div class="grow">
-											<h3 class="text-lg leading-6 font-medium text-gray-900">Community Invitation URL</h3>
-											<div class="mt-2 sm:flex sm:items-start sm:justify-between">
-												<div class="max-w-xl text-sm text-gray-500">
-													<p>Link to your community invite.</p>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="mt-3 relative rounded-md shadow-sm">
-										<input type="text"
-											   name="invitation-url"
-											   id="invitation-url"
-											   class="focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
-											   placeholder="https://yourwebsite.com/community-invite">
-									</div>
-								</div>
-							</div>
+{{--							<div class="bg-white">--}}
+{{--								<div class="px-4 py-5 sm:p-6">--}}
+{{--									<div class="flex">--}}
+{{--										<div class="grow">--}}
+{{--											<h3 class="text-lg leading-6 font-medium text-gray-900">Home URL</h3>--}}
+{{--											<div class="mt-2 sm:flex sm:items-start sm:justify-between">--}}
+{{--												<div class="max-w-xl text-sm text-gray-500">--}}
+{{--													<p>Link to your home page.</p>--}}
+{{--												</div>--}}
+{{--											</div>--}}
+{{--										</div>--}}
+{{--									</div>--}}
+{{--									<div class="mt-3 relative rounded-md shadow-sm">--}}
+{{--										<input type="text"--}}
+{{--											   name="home-url"--}}
+{{--											   id="home-url"--}}
+{{--											   class="focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"--}}
+{{--											   placeholder="https://yourwebsite.com">--}}
+{{--									</div>--}}
+{{--								</div>--}}
+{{--							</div>--}}
+{{--							<div class="bg-white">--}}
+{{--								<div class="px-4 py-5 sm:p-6">--}}
+{{--									<div class="flex">--}}
+{{--										<div class="grow">--}}
+{{--											<h3 class="text-lg leading-6 font-medium text-gray-900">Docs URL</h3>--}}
+{{--											<div class="mt-2 sm:flex sm:items-start sm:justify-between">--}}
+{{--												<div class="max-w-xl text-sm text-gray-500">--}}
+{{--													<p>Link to your documentation.</p>--}}
+{{--												</div>--}}
+{{--											</div>--}}
+{{--										</div>--}}
+{{--									</div>--}}
+{{--									<div class="mt-3 relative rounded-md shadow-sm">--}}
+{{--										<input type="text"--}}
+{{--											   name="docs-url"--}}
+{{--											   id="docs-url"--}}
+{{--											   class="focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"--}}
+{{--											   placeholder="https://docs.yourwebsite.com">--}}
+{{--									</div>--}}
+{{--								</div>--}}
+{{--							</div>--}}
+{{--							<div class="bg-white">--}}
+{{--								<div class="px-4 py-5 sm:p-6">--}}
+{{--									<div class="flex">--}}
+{{--										<div class="grow">--}}
+{{--											<h3 class="text-lg leading-6 font-medium text-gray-900">Community Invitation URL</h3>--}}
+{{--											<div class="mt-2 sm:flex sm:items-start sm:justify-between">--}}
+{{--												<div class="max-w-xl text-sm text-gray-500">--}}
+{{--													<p>Link to your community invite.</p>--}}
+{{--												</div>--}}
+{{--											</div>--}}
+{{--										</div>--}}
+{{--									</div>--}}
+{{--									<div class="mt-3 relative rounded-md shadow-sm">--}}
+{{--										<input type="text"--}}
+{{--											   name="invitation-url"--}}
+{{--											   id="invitation-url"--}}
+{{--											   class="focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"--}}
+{{--											   placeholder="https://yourwebsite.com/community-invite">--}}
+{{--									</div>--}}
+{{--								</div>--}}
+{{--							</div>--}}
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+
+	<script>
+		function setChannelVisibility(channel){
+      		fetch('{{route('setChannelVisibility')}}', {
+              method: 'POST',
+              body: JSON.stringify({
+                account_id: channel.account_id,
+                channel_id: channel.channelId,
+				is_visible: !channel.is_visible
+              }),
+              headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+              },
+            }).then((response) => response);
+		}
+
+		function setUserAnonymize(value) {
+          fetch('{{route('setUserAnonymize')}}', {
+            method: 'POST',
+            body: JSON.stringify({
+              account_id: {{$account->id}},
+              is_anonymize: value
+            }),
+            headers: {
+              'Content-type': 'application/json; charset=UTF-8',
+            },
+          }).then((response) => response);
+		}
+
+		function setDefaultChannel(channel) {
+          fetch('{{route('setDefaultChannel')}}', {
+            method: 'POST',
+            body: JSON.stringify({
+              channel: channel,
+              is_default: true
+            }),
+            headers: {
+              'Content-type': 'application/json; charset=UTF-8',
+            },
+          }).then((response) => response);
+		}
+	</script>
 </x-app-layout>

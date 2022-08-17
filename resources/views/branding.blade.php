@@ -26,14 +26,14 @@
 									<label for="logo" class="block text-sm font-bold leading-5 mb-1">Logo</label>
 									<div class="text-sm mb-2 text-gray-600">Logo of your brand.</div>
 									<input type="file" style="display:none">
-									<button disabled="" type="button" class="font-medium rounded-lg text-sm px-5 py-2.5 mb-2 focus:ring-4 focus:outline-none text-black bg-gray-200">Upload file</button>
+									<button type="button" class="font-medium rounded-lg text-sm px-5 py-2.5 mb-2 focus:ring-4 focus:outline-none text-black bg-gray-200">Upload file</button>
 								</div>
 								<div class="p-3 mb-3 rounded border-gray-200 border-solid border bg-slate-50">
 									<label for="googleAnalyticsId" class="block text-sm font-bold leading-5 mb-1">Google Analytics ID</label>
 									<div class="text-sm mb-2 text-gray-600">You can collect data from your website with Google Analytics. <br/>Enter a valid Analytics Property ID.</div>
 									<div class="mt-1 relative rounded-md shadow-sm">
 										<input type="text" class="focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" id="googleAnalyticsId"
-											   name="googleAnalyticsId" placeholder="G-XXXXXXX or UA-XXXXXX-X" disabled="" readonly="" value="">
+											   name="googleAnalyticsId" placeholder="G-XXXXXXX or UA-XXXXXX-X" value="">
 									</div>
 								</div>
 								<div class="flex justify-end">

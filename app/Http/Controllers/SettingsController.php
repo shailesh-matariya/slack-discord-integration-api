@@ -4,11 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Jobs\SlackSyncJob;
 use App\Models\Account;
+use App\Models\AccountChannel;
+use App\Models\AccountUser;
 use App\Models\User;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 
 class SettingsController extends Controller
@@ -16,10 +19,12 @@ class SettingsController extends Controller
     public function settings(): View
     {
         $account = Auth::user()->account;
+        config()->set('auth.account', $account);
         $slackUrl = $this->getSlackUrl();
         $discordUrl = $this->getDiscordUrl();
-
-        return view('settings', compact('account', 'slackUrl', 'discordUrl'));
+        $channels = AccountChannel::query()->get();
+        $defaultChannel = $channels->where('is_default', true)->first();
+        return view('settings', compact('account', 'slackUrl', 'discordUrl', 'channels', 'defaultChannel'));
     }
 
     private function getSlackUrl(): string
@@ -90,5 +95,42 @@ class SettingsController extends Controller
     public function getDiscordUrl(): string
     {
         return '';
+    }
+
+    public function setChannelVisibility(Request $request)
+    {
+        $channel = AccountChannel::query()->where('account_id', $request->account_id)
+            ->where('channelId', $request->channel_id)
+            ->first();
+
+        $channel->update([
+                'is_visible'=> $request->is_visible
+            ]);
+    }
+
+    public function setUserAnonymize(Request $request)
+    {
+        $account = Account::find($request->account_id);
+        $account->is_anonymize = $request->is_anonymize;
+        $account->save();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Saved successfully!'
+        ]);
+    }
+
+    public function setDefaultChannel(Request $request)
+    {
+        $account = Account::find($request->channel['account_id']);
+        config()->set('auth.account', $account);
+
+        $channel = AccountChannel::find($request->channel['id']);
+        AccountChannel::query()->where('account_id', $channel->account_id)->update([
+            'is_default'=> false
+        ]);
+        $channel->update([
+            'is_default'=> $request->is_default
+        ]);
     }
 }
