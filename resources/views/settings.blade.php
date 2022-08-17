@@ -9,43 +9,45 @@
 							<div class="bg-white">
 								<div class="px-4 py-5 sm:p-6">
 									<div class="flex">
-										<div class="grow">
-											<h3 class="text-lg leading-6 font-medium text-gray-900">
-												Slack integration
-												@if ($account)
-												<span class="text-gray-300"> | </span>
-												<svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="circle-check" class="svg-inline--fa fa-circle-check h-5 w-5 mr-1 inline"
-													 role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" color="green">
-													<path fill="currentColor" d="M0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256zM371.8 211.8C382.7 200.9 382.7 183.1 371.8 172.2C360.9 161.3 343.1 161.3 332.2 172.2L224 280.4L179.8 236.2C168.9 225.3 151.1 225.3 140.2 236.2C129.3 247.1 129.3 264.9 140.2 275.8L204.2 339.8C215.1 350.7 232.9 350.7 243.8 339.8L371.8 211.8z"></path>
-												</svg>
-													Done
-													<svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="circle-exclamation" class="svg-inline--fa fa-circle-exclamation h-5 w-5 mr-1" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" color="red">
-														<path fill="currentColor" d="M256 0C114.6 0 0 114.6 0 256s114.6 256 256 256s256-114.6 256-256S397.4 0 256 0zM232 152C232 138.8 242.8 128 256 128s24 10.75 24 24v128c0 13.25-10.75 24-24 24S232 293.3 232 280V152zM256 400c-17.36 0-31.44-14.08-31.44-31.44c0-17.36 14.07-31.44 31.44-31.44s31.44 14.08 31.44 31.44C287.4 385.9 273.4 400 256 400z"></path>
-													</svg>
-													Error
-												@endif
-											</h3>
-											<div class="mt-2 sm:flex sm:items-start sm:justify-between">
-												<div class="max-w-xl text-sm text-gray-500">
-													<p>Connect to Slack to fetch conversation.</p>
-												</div>
-											</div>
-										</div>
 
-										<div class="grow">
-											<h3 class="text-lg leading-6 font-medium text-gray-900">
-												Slack/Discord integration
-											</h3>
-											<div class="mt-2 sm:flex sm:items-start sm:justify-between">
-												<div class="max-w-xl text-sm text-gray-500">
-													<p>Connect to Slack/Discord to fetch conversations.</p>
-												</div>
-											</div>
-										</div>
+                                        @if ($account)
+                                            <div class="grow">
+                                                <h3 class="text-lg leading-6 font-medium text-gray-900">
+                                                    Slack integration
+                                                    <span class="text-gray-300"> | </span>
+                                                    <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="circle-check" class="svg-inline--fa fa-circle-check h-5 w-5 mr-1 inline"
+                                                         role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" color="green">
+                                                        <path fill="currentColor" d="M0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256zM371.8 211.8C382.7 200.9 382.7 183.1 371.8 172.2C360.9 161.3 343.1 161.3 332.2 172.2L224 280.4L179.8 236.2C168.9 225.3 151.1 225.3 140.2 236.2C129.3 247.1 129.3 264.9 140.2 275.8L204.2 339.8C215.1 350.7 232.9 350.7 243.8 339.8L371.8 211.8z"></path>
+                                                    </svg>
+                                                    Done
+                                                    <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="circle-exclamation" class="svg-inline--fa fa-circle-exclamation h-5 w-5 mr-1" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" color="red">
+                                                        <path fill="currentColor" d="M256 0C114.6 0 0 114.6 0 256s114.6 256 256 256s256-114.6 256-256S397.4 0 256 0zM232 152C232 138.8 242.8 128 256 128s24 10.75 24 24v128c0 13.25-10.75 24-24 24S232 293.3 232 280V152zM256 400c-17.36 0-31.44-14.08-31.44-31.44c0-17.36 14.07-31.44 31.44-31.44s31.44 14.08 31.44 31.44C287.4 385.9 273.4 400 256 400z"></path>
+                                                    </svg>
+                                                    Error
+                                                </h3>
+                                                <div class="mt-2 sm:flex sm:items-start sm:justify-between">
+                                                    <div class="max-w-xl text-sm text-gray-500">
+                                                        <p>Connect to Slack to fetch conversation.</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @else
+                                            <div class="grow">
+                                                <h3 class="text-lg leading-6 font-medium text-gray-900">
+                                                    Slack/Discord integration
+                                                </h3>
+                                                <div class="mt-2 sm:flex sm:items-start sm:justify-between">
+                                                    <div class="max-w-xl text-sm text-gray-500">
+                                                        <p>Connect to Slack/Discord to fetch conversations.</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endif
+
 
 										<div class="flex flex-col items-center gap-2">
 											<div class="grid grid-cols-1 gap-4">
-												@if (! $account || $account->platform === 'slack')
+												@if (! $account || $account?->platform === 'slack')
 													<a href="{{ $slackUrl }}" class="flex rounded-md border p-2 justify-around border-gray-300 text-base w-48">
 														<div class="flex gap-2 items-center">
 															<svg width="20" height="20" viewBox="0 0 54 54" xmlns="http://www.w3.org/2000/svg">
@@ -65,7 +67,7 @@
 													</a>
 												@endif
 
-												@if (! $account || $account->platform === 'discord')
+												@if (! $account || $account?->platform === 'discord')
 													<a href="{{ $discordUrl }}" class="flex rounded-md border p-2 justify-around border-gray-300 text-base w-48">
 														<div class="flex gap-2 items-center">
 															<svg width="20" height="20" viewBox="0 0 71 55" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -109,24 +111,29 @@
 											</div>
 										</div>
 
-										<div class="self-center">
-											<div class="mt-5 sm:mt-0 sm:ml-6 sm:flex-shrink-0 sm:flex sm:items-center" x-data="{ open: {{$account->is_anonymize}} }" x-init="$watch('open', (value,
+                                        @if($account)
+                                            <div class="self-center">
+                                                <div class="mt-5 sm:mt-0 sm:ml-6 sm:flex-shrink-0 sm:flex sm:items-center" x-data="{ open: {{$account?->is_anonymize ? 'true' : 'false' }} }" x-init="$watch('open', (value,
 											oldValue) =>
 											setUserAnonymize(value))">
-												<button @click="open = !open" x-bind:class="open ? 'bg-gray-700' : 'bg-gray-200'" class="relative inline-flex flex-shrink-0 h-6 w-11 border-2
+                                                    <button @click="open = !open" x-bind:class="open ? 'bg-gray-700' : 'bg-gray-200'" class="relative inline-flex flex-shrink-0 h-6 w-11 border-2
 												border-transparent rounded-full cursor-pointer
 												transition-colors
 												ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300" id="headlessui-switch-3" role="switch" type="button"
-														tabindex="0" aria-checked="false" aria-labelledby="headlessui-label-1" aria-describedby="headlessui-description-2">
-													<span x-bind:class="open ? 'translate-x-5' : 'translate-x-0'" class="inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200"></span>
-												</button>
-											</div>
-										</div>
-										<div class="self-center">
-											<div class="mt-5 sm:mt-0 sm:ml-6 sm:flex-shrink-0 sm:flex sm:items-center">
-												<p class="text-sm text-gray-400">Waiting for integration</p>
-											</div>
-										</div>
+                                                            tabindex="0" aria-checked="false" aria-labelledby="headlessui-label-1" aria-describedby="headlessui-description-2">
+                                                        <span x-bind:class="open ? 'translate-x-5' : 'translate-x-0'" class="inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200"></span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        @else
+                                            <div class="self-center">
+                                                <div class="mt-5 sm:mt-0 sm:ml-6 sm:flex-shrink-0 sm:flex sm:items-center">
+                                                    <p class="text-sm text-gray-400">Waiting for integration</p>
+                                                </div>
+                                            </div>
+                                        @endif
+
+
 									</div>
 								</div>
 							</div>
@@ -141,63 +148,65 @@
 												</div>
 											</div>
 										</div>
+                                        @if($account)
+										    <div class="self-center">
+                                                <label class="sr-only">Change published status</label>
+                                                <div class="relative" x-data="{dropdownMenu: false, buttonLabel: '{{$defaultChannel ? $defaultChannel?->name : 'choose one' }}'}">
+                                                    <div class="inline-flex shadow-sm rounded-md divide-x divide-gray-700">
+                                                        <div class="relative z-0 inline-flex shadow-sm rounded-md divide-x divide-gray-700">
+                                                            <div class="relative inline-flex items-center bg-gray-700 py-2 pl-3 pr-4 border border-transparent rounded-l-md shadow-sm text-white">
+                                                                <svg width="14px" height="14px" viewBox="0 0 54 54" xmlns="http://www.w3.org/2000/svg">
+                                                                    <g fill="none" fill-rule="evenodd">
+                                                                        <path d="M19.712.133a5.381 5.381 0 0 0-5.376 5.387 5.381 5.381 0 0 0 5.376 5.386h5.376V5.52A5.381 5.381 0 0 0 19.712.133m0 14.365H5.376A5.381 5.381 0 0 0 0 19.884a5.381 5.381 0 0 0 5.376 5.387h14.336a5.381 5.381 0 0 0 5.376-5.387 5.381 5.381 0 0 0-5.376-5.386" fill="#eee"></path>
+                                                                        <path d="M53.76 19.884a5.381 5.381 0 0 0-5.376-5.386 5.381 5.381 0 0 0-5.376 5.386v5.387h5.376a5.381 5.381 0 0 0 5.376-5.387m-14.336 0V5.52A5.381 5.381 0 0 0 34.048.133a5.381 5.381 0 0 0-5.376 5.387v14.364a5.381 5.381 0 0 0 5.376 5.387 5.381 5.381 0 0 0 5.376-5.387" fill="#eee"></path>
+                                                                        <path d="M34.048 54a5.381 5.381 0 0 0 5.376-5.387 5.381 5.381 0 0 0-5.376-5.386h-5.376v5.386A5.381 5.381 0 0 0 34.048 54m0-14.365h14.336a5.381 5.381 0 0 0 5.376-5.386 5.381 5.381 0 0 0-5.376-5.387H34.048a5.381 5.381 0 0 0-5.376 5.387 5.381 5.381 0 0 0 5.376 5.386" fill="#eee"></path>
+                                                                        <path d="M0 34.249a5.381 5.381 0 0 0 5.376 5.386 5.381 5.381 0 0 0 5.376-5.386v-5.387H5.376A5.381 5.381 0 0 0 0 34.25m14.336-.001v14.364A5.381 5.381 0 0 0 19.712 54a5.381 5.381 0 0 0 5.376-5.387V34.25a5.381 5.381 0 0 0-5.376-5.387 5.381 5.381 0 0 0-5.376 5.387" fill="#eee"></path>
+                                                                    </g>
+                                                                </svg>
+                                                                <p class="ml-2.5 text-sm font-medium" x-text="buttonLabel"></p>
+                                                            </div>
 
-										<div class="self-center">
-											<label class="sr-only">Change published status</label>
-											<div class="relative" x-data="{dropdownMenu: false, buttonLabel: '{{$defaultChannel ? $defaultChannel->name : 'choose one' }}'}">
-												<div class="inline-flex shadow-sm rounded-md divide-x divide-gray-700">
-													<div class="relative z-0 inline-flex shadow-sm rounded-md divide-x divide-gray-700">
-														<div class="relative inline-flex items-center bg-gray-700 py-2 pl-3 pr-4 border border-transparent rounded-l-md shadow-sm text-white">
-															<svg width="14px" height="14px" viewBox="0 0 54 54" xmlns="http://www.w3.org/2000/svg">
-																<g fill="none" fill-rule="evenodd">
-																	<path d="M19.712.133a5.381 5.381 0 0 0-5.376 5.387 5.381 5.381 0 0 0 5.376 5.386h5.376V5.52A5.381 5.381 0 0 0 19.712.133m0 14.365H5.376A5.381 5.381 0 0 0 0 19.884a5.381 5.381 0 0 0 5.376 5.387h14.336a5.381 5.381 0 0 0 5.376-5.387 5.381 5.381 0 0 0-5.376-5.386" fill="#eee"></path>
-																	<path d="M53.76 19.884a5.381 5.381 0 0 0-5.376-5.386 5.381 5.381 0 0 0-5.376 5.386v5.387h5.376a5.381 5.381 0 0 0 5.376-5.387m-14.336 0V5.52A5.381 5.381 0 0 0 34.048.133a5.381 5.381 0 0 0-5.376 5.387v14.364a5.381 5.381 0 0 0 5.376 5.387 5.381 5.381 0 0 0 5.376-5.387" fill="#eee"></path>
-																	<path d="M34.048 54a5.381 5.381 0 0 0 5.376-5.387 5.381 5.381 0 0 0-5.376-5.386h-5.376v5.386A5.381 5.381 0 0 0 34.048 54m0-14.365h14.336a5.381 5.381 0 0 0 5.376-5.386 5.381 5.381 0 0 0-5.376-5.387H34.048a5.381 5.381 0 0 0-5.376 5.387 5.381 5.381 0 0 0 5.376 5.386" fill="#eee"></path>
-																	<path d="M0 34.249a5.381 5.381 0 0 0 5.376 5.386 5.381 5.381 0 0 0 5.376-5.386v-5.387H5.376A5.381 5.381 0 0 0 0 34.25m14.336-.001v14.364A5.381 5.381 0 0 0 19.712 54a5.381 5.381 0 0 0 5.376-5.387V34.25a5.381 5.381 0 0 0-5.376-5.387 5.381 5.381 0 0 0-5.376 5.387" fill="#eee"></path>
-																</g>
-															</svg>
-															<p class="ml-2.5 text-sm font-medium" x-text="buttonLabel"></p>
-														</div>
-
-														<!-- Dropdown toggle button -->
-														<button class="relative inline-flex items-center bg-gray-700 p-2 rounded-l-none rounded-r-md text-sm font-medium text-white hover:bg-gray-800
-														focus:outline-none focus:z-10" type="button" @click="dropdownMenu = ! dropdownMenu">
-															<span class="sr-only">Change default channel</span>
-															<svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="chevron-down" class="svg-inline--fa fa-chevron-down h-4 w-5
-															text-white" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-																<path fill="currentColor" d="M224 416c-8.188 0-16.38-3.125-22.62-9.375l-192-192c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L224 338.8l169.4-169.4c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25l-192 192C240.4 412.9 232.2 416 224 416z"></path>
-															</svg>
-														</button>
-													</div>
-												</div>
-												<ul x-show="dropdownMenu" class="origin-top-right absolute z-10 right-0 mt-2 w-72 rounded-md shadow-lg overflow-hidden bg-white ring-1 ring-black
-												ring-opacity-5 focus:outline-none" x-data="{channels: {{$channels}}, defaultChannelId: {{$defaultChannel->id}}}" @click.outside="dropdownMenu=!dropdownMenu">
-													<template x-for="channel in channels">
-														<li class="text-gray-900 cursor-default hover:bg-gray-100 relative p-2 text-sm" role="option" tabindex="-1" @click="setDefaultChannel(channel);
-														 buttonLabel=channel.name;defaultChannelId=channel.id; dropdownMenu=!dropdownMenu">
-															<div class="flex flex-col">
-																<div class="flex justify-between">
-																	<p :class="{'font-semibold': defaultChannelId === channel.id, 'font-normal': defaultChannelId !== channel.id}"
-																	   x-text="channel.name"></p>
-																	<span class="text-green-600" x-show="defaultChannelId === channel.id">
-                    													<svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="check" class="svg-inline--fa fa-check h-5 w-5"
-																		 role="img"
-																		 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-                        													<path fill="currentColor" d="M438.6 105.4C451.1 117.9 451.1 138.1 438.6 150.6L182.6 406.6C170.1 419.1 149.9 419.1 137.4 406.6L9.372 278.6C-3.124 266.1-3.124 245.9 9.372 233.4C21.87 220.9 42.13 220.9 54.63 233.4L159.1 338.7L393.4 105.4C405.9 92.88 426.1 92.88 438.6 105.4H438.6z"></path>
-                    													</svg>
-                													</span>
-																</div>
-															</div>
-														</li>
-													</template>
-												</ul>
-											</div>
-										</div>
-										<div class="self-center">
-											<div class="mt-5 sm:mt-0 sm:ml-6 sm:flex-shrink-0 sm:flex sm:items-center">
-												<p class="text-sm text-gray-400">Waiting for integration</p>
-											</div>
-										</div>
+                                                            <!-- Dropdown toggle button -->
+                                                            <button class="relative inline-flex items-center bg-gray-700 p-2 rounded-l-none rounded-r-md text-sm font-medium text-white hover:bg-gray-800
+                                                            focus:outline-none focus:z-10" type="button" @click="dropdownMenu = ! dropdownMenu">
+                                                                <span class="sr-only">Change default channel</span>
+                                                                <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="chevron-down" class="svg-inline--fa fa-chevron-down h-4 w-5
+                                                                text-white" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                                                    <path fill="currentColor" d="M224 416c-8.188 0-16.38-3.125-22.62-9.375l-192-192c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L224 338.8l169.4-169.4c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25l-192 192C240.4 412.9 232.2 416 224 416z"></path>
+                                                                </svg>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <ul x-show="dropdownMenu" class="origin-top-right absolute z-10 right-0 mt-2 w-72 rounded-md shadow-lg overflow-hidden bg-white ring-1 ring-black
+                                                    ring-opacity-5 focus:outline-none" x-data="{channels: {{$channels}}, defaultChannelId: '{{$defaultChannel?->id}}' }" @click.outside="dropdownMenu=!dropdownMenu">
+                                                        <template x-for="channel in channels">
+                                                            <li class="text-gray-900 cursor-default hover:bg-gray-100 relative p-2 text-sm" role="option" tabindex="-1" @click="setDefaultChannel(channel);
+                                                             buttonLabel=channel.name;defaultChannelId=channel.id; dropdownMenu=!dropdownMenu">
+                                                                <div class="flex flex-col">
+                                                                    <div class="flex justify-between">
+                                                                        <p :class="{'font-semibold': defaultChannelId === channel.id, 'font-normal': defaultChannelId !== channel.id}"
+                                                                           x-text="channel.name"></p>
+                                                                        <span class="text-green-600" x-show="defaultChannelId === channel.id">
+                                                                            <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="check" class="svg-inline--fa fa-check h-5 w-5"
+                                                                             role="img"
+                                                                             xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                                                                <path fill="currentColor" d="M438.6 105.4C451.1 117.9 451.1 138.1 438.6 150.6L182.6 406.6C170.1 419.1 149.9 419.1 137.4 406.6L9.372 278.6C-3.124 266.1-3.124 245.9 9.372 233.4C21.87 220.9 42.13 220.9 54.63 233.4L159.1 338.7L393.4 105.4C405.9 92.88 426.1 92.88 438.6 105.4H438.6z"></path>
+                                                                            </svg>
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                            </li>
+                                                        </template>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        @else
+                                            <div class="self-center">
+                                                <div class="mt-5 sm:mt-0 sm:ml-6 sm:flex-shrink-0 sm:flex sm:items-center">
+                                                    <p class="text-sm text-gray-400">Waiting for integration</p>
+                                                </div>
+                                            </div>
+                                        @endif
 									</div>
 								</div>
 							</div>
@@ -231,7 +240,9 @@
 												</div>
 											</div>
 										</div>
-										<p class="text-sm text-gray-400">Waiting for integration</p>
+                                        @if(!$account)
+                                            <p class="text-sm text-gray-400">Waiting for integration</p>
+                                        @endif
 									</div>
 								</div>
 							</div>
@@ -324,7 +335,7 @@
           fetch('{{route('setUserAnonymize')}}', {
             method: 'POST',
             body: JSON.stringify({
-              account_id: {{$account->id}},
+              account_id: '{{$account?->id}}',
               is_anonymize: value
             }),
             headers: {

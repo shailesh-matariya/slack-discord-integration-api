@@ -36,4 +36,14 @@ class AccountChannel extends Model
     {
         return $this->hasMany(Message::class, 'account_channel_id');
     }
+
+    public function scopeVisible($query)
+    {
+        $query->where('is_visible', 1);
+    }
+
+    public function scopePrivate($query)
+    {
+        $query->where('is_private', 1);
+    }
 }

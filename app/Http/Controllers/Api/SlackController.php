@@ -15,7 +15,7 @@ class SlackController extends Controller
     //Get Slack channels from particular workspace
     public function getChannels(Request $request): \Illuminate\Http\JsonResponse
     {
-        $channels = AccountChannel::query()->get();
+        $channels = AccountChannel::query()->visible()->get();
         return response()->json([
             'status' => true,
             'channel_collection' => $channels
