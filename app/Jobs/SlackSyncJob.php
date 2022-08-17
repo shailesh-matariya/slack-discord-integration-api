@@ -5,6 +5,7 @@ namespace App\Jobs;
 use App\Models\Account;
 use App\Models\AccountChannel;
 use App\Models\AccountUser;
+use App\Models\Attachment;
 use App\Models\Message;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
@@ -16,7 +17,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Http;
 
-class SlackSyncJob // implements ShouldQueue
+class SlackSyncJob implements ShouldQueue
 {
     use Dispatchable;
     use InteractsWithQueue;
@@ -35,12 +36,6 @@ class SlackSyncJob // implements ShouldQueue
     public function __construct(Account $account)
     {
         $this->account = $account;
-        $this->botClient = Http::withHeaders([
-            'Authorization' => 'Bearer ' . $this->account->bot_access_token
-        ]);
-        $this->userClient = Http::withHeaders([
-            'Authorization' => 'Bearer ' . $this->account->user_access_token
-        ]);
     }
 
     /**
@@ -51,6 +46,13 @@ class SlackSyncJob // implements ShouldQueue
     public function handle()
     {
         config()->set('auth.account', $this->account);
+
+        $this->botClient = Http::withHeaders([
+            'Authorization' => 'Bearer ' . $this->account->bot_access_token
+        ]);
+        $this->userClient = Http::withHeaders([
+            'Authorization' => 'Bearer ' . $this->account->user_access_token
+        ]);
 
         $userResponse = $this->botClient->get('https://slack.com/api/users.list');
 
@@ -99,12 +101,13 @@ class SlackSyncJob // implements ShouldQueue
         $payload = [
             'channel' => $accountChannel->channelId
         ];
+        $lastTS = '';
         if ($accountChannel->last_message_timestamp) {
             $payload['oldest'] = $accountChannel->last_message_timestamp;
+            $lastTS = $accountChannel->last_message_timestamp;
         }
 
         $messageResponse = $this->userClient->get('https://slack.com/api/conversations.history', $payload);
-
         $messageResponse = json_decode($messageResponse->body());
 
         if (empty($this->users)) {
@@ -127,9 +130,23 @@ class SlackSyncJob // implements ShouldQueue
 
                 $messageModel->message = $message->text;
                 $messageModel->save();
+
+                if (! empty($message->files)) {
+                    $attachments = [];
+                    foreach ($message->files as $file) {
+                        $attachments[] = new Attachment([
+                            'url' => $file->permalink,
+                            'file_name' => $file->name,
+                            'description' => $file->mimetype,
+                            'size' => $file->size,
+                        ]);
+                    }
+
+                    $messageModel->attachments()->saveMany($attachments);
+                }
             }
 
-            $lastTS = $message->ts;
+            $lastTS = $lastTS > $message->ts ? $lastTS : $message->ts;
         }
 
         if (isset($lastTS)) {

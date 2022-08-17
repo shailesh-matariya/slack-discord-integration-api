@@ -42,7 +42,9 @@ class SlackController extends Controller
     //Get Slack chat from particular channel
     public function getChannelMessages(Request $request): \Illuminate\Http\JsonResponse
     {
-        $messages = Message::query()->where('account_channel_id', $request['channel_id'])
+        $messages = Message::query()
+            ->where('account_channel_id', $request['channel_id'])
+            ->with('attachments')
             ->orderBy('ts', 'desc')
             ->paginate(40);
 

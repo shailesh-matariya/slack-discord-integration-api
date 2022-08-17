@@ -86,8 +86,7 @@ class SettingsController extends Controller
         $account->user_scope = $response->authed_user->scope;
         $account->save();
 
-        dispatch(new SlackSyncJob($account));
-
+        dispatch_sync(new SlackSyncJob($account));
 
         return redirect(route('settings'));
     }

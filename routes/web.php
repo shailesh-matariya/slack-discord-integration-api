@@ -3,6 +3,7 @@
 use App\Http\Controllers\SettingsController;
 use App\Jobs\SlackSyncJob;
 use App\Models\Account;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,7 +18,15 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
+//    $account = Account::first();
+//
+//    dispatch(new SlackSyncJob($account));
+
     return view('welcome');
+});
+
+Route::get('run', function () {
+   Artisan::call('execute:sync');
 });
 
 Route::get('/getSlackUrl', [SettingsController::class, 'getSlackUrl']);
