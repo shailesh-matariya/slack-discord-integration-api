@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\BrandingController;
 use App\Http\Controllers\SettingsController;
+use App\Http\Middleware\VerifyCsrfToken;
 use App\Jobs\SlackSyncJob;
 use App\Models\Account;
 use Illuminate\Support\Facades\Artisan;
@@ -39,14 +41,24 @@ Route::middleware([
 ])->group(function () {
     Route::get('/settings', [SettingsController::class, 'settings'])->name('settings');
 
-    Route::get('/branding', function () {
-        return view('branding');
-    })->name('branding');
+    Route::get('/branding', [BrandingController::class, 'index'])->name('branding');
 
     Route::get('/plans', function () {
         return view('plans');
     })->name('plans');
-    Route::post('/set-channel-visibility', [SettingsController::class, 'setChannelVisibility'])->name('setChannelVisibility')->withoutMiddleware(\App\Http\Middleware\VerifyCsrfToken::class);
-    Route::post('/set-anonymize', [SettingsController::class, 'setUserAnonymize'])->name('setUserAnonymize')->withoutMiddleware(\App\Http\Middleware\VerifyCsrfToken::class);
-    Route::post('/set-default-channel', [SettingsController::class, 'setDefaultChannel'])->name('setDefaultChannel')->withoutMiddleware(\App\Http\Middleware\VerifyCsrfToken::class);
+
+    Route::post('/set-channel-visibility', [SettingsController::class, 'setChannelVisibility'])
+        ->name('setChannelVisibility')
+        ->withoutMiddleware(VerifyCsrfToken::class);
+
+    Route::post('/set-anonymize', [SettingsController::class, 'setUserAnonymize'])
+        ->name('setUserAnonymize')
+        ->withoutMiddleware(VerifyCsrfToken::class);
+
+    Route::post('/set-default-channel', [SettingsController::class, 'setDefaultChannel'])
+        ->name('setDefaultChannel')
+        ->withoutMiddleware(VerifyCsrfToken::class);
+
+    Route::post('set-branding-data', [BrandingController::class, 'setBrandingData'])
+        ->name('setBrandingData');
 });

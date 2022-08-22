@@ -15,6 +15,8 @@ class Account extends Model
 
     protected $guarded = [];
 
+    final public const BRAND_LOGO_PATH = 'branding_logos';
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
