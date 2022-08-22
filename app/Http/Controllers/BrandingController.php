@@ -18,7 +18,6 @@ class BrandingController extends Controller
 
     public function setBrandingData(Request $request)
     {
-        dd($request->all());
         $validator = Validator::make($request->all(), [
             'account_id' => ['required', 'exists:accounts,id'],
             'brand_custom_domain' => ['nullable', 'string', new Domain],

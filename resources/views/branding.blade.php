@@ -100,17 +100,17 @@
                         formData.append(x, finalData[x]);
                     }
                     formData.append('account_id', '{{$account->id}}');
-                    // formData.append('brand_logo', this.$refs.brand_logo);
-                    console.log(this.$refs.brand_logo);
+                    if(this.$refs.brand_logo.files.length>0){
+                        formData.append('brand_logo', this.$refs.brand_logo.files[0]);
+                    }
 
                     fetch('{{route('setBrandingData')}}', {
                         method: 'POST',
                         body: formData,
                         processData: false,
-                        contentType: 'multipart/form-data',
                         headers: {
-                            'Content-type': 'application/json; charset=UTF-8',
-                            'X-CSRF-TOKEN' : '{{csrf_token()}}'
+                            'X-CSRF-TOKEN' : '{{csrf_token()}}',
+                            contentType: false,
                         },
                     }).then((response) => response.json()) //2
                     .then((data) => {
