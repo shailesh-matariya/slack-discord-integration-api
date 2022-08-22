@@ -15,6 +15,7 @@
 
         <!-- Styles -->
         @livewireStyles
+		@stack('css')
     </head>
     <body class="font-sans antialiased">
 	<!-- This example requires Tailwind CSS v2.0+ -->
