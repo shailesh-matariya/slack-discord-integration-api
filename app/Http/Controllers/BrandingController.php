@@ -26,7 +26,8 @@ class BrandingController extends Controller
             'brand_primary_color' => ['nullable'],
             'brand_secondary_color' => ['nullable'],
             'brand_logo' => ['nullable', 'file'],
-            'brand_popular_by' => ['nullable', 'in:comments,reactions,replies'],
+            'brand_popular_by' => ['nullable', 'array'],
+            'brand_popular_by.*' => ["in:".implode(',',Account::BRAND_POPULAR)],
         ], [], [
             'brand_custom_domain' => 'Custom domain',
             'brand_embed_url' => 'Embed url',

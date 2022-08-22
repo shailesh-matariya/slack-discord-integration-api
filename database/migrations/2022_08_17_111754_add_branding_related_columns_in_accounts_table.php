@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('brand_primary_color')->nullable()->after('is_anonymize');
             $table->string('brand_secondary_color')->nullable()->after('is_anonymize');
             $table->string('brand_logo')->nullable()->after('is_anonymize');
-            $table->enum('brand_popular_by',['comments','reactions','replies'])->nullable()->after('is_anonymize');
+            $table->string('brand_popular_by')->nullable()->after('is_anonymize');
         });
     }
 

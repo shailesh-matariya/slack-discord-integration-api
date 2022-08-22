@@ -17,6 +17,12 @@ class Account extends Model
 
     final public const BRAND_LOGO_PATH = 'branding_logos';
 
+    final public const BRAND_POPULAR = ['comments', 'reactions', 'replies'];
+
+    protected $casts = [
+        'brand_popular_by' => 'array'
+    ];
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
