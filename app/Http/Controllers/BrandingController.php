@@ -45,7 +45,7 @@ class BrandingController extends Controller
 
         $account = Account::find($request->account_id);
         $account->brand_popular_by = array_unique(array_filter(explode(',',$request->brand_popular_by)));
-        $account->update($request->only(['brand_custom_domain', 'brand_embed_url', 'brand_custom_code', 'brand_primary_color', 'brand_secondary_color', 'cname_records']));
+        $account->update($request->only(['brand_custom_domain', 'brand_embed_url', 'brand_custom_code', 'brand_primary_color', 'brand_secondary_color', 'brand_cname_records']));
 
         if ($request->hasFile('brand_logo')) {
             $uploadedFile = $request->file('brand_logo');

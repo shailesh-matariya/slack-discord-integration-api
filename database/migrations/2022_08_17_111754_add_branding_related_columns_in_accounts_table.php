@@ -17,7 +17,7 @@ return new class extends Migration
         Schema::table('accounts', function (Blueprint $table) {
             $table->string('brand_custom_domain')->nullable()->after('is_anonymize');
             $table->string('brand_embed_url')->nullable()->after('is_anonymize');
-            $table->longText('cname_records')->nullable()->after('is_anonymize');
+            $table->longText('brand_cname_records')->nullable()->after('is_anonymize');
             $table->longText('brand_custom_code')->nullable()->after('is_anonymize');
             $table->string('brand_primary_color')->nullable()->after('is_anonymize');
             $table->string('brand_secondary_color')->nullable()->after('is_anonymize');
