@@ -78,7 +78,7 @@
 														<div class="flex flex-auto flex-wrap">
 															<template x-for="(option,index) in selected" :key="options[option].value">
 																<div class="flex justify-center items-center m-1 font-medium py-1 px-1 bg-white rounded bg-gray-100 border">
-																	<div class="text-xs font-normal leading-none max-w-full flex-initial x-model=" options[option] x-text="options[option].text"></div>
+																	<div class="text-xs font-normal leading-none max-w-full flex-initial" x-model="options[option]" x-text="options[option].text"></div>
 																	<div class="flex flex-auto flex-row-reverse">
 																		<div x-on:click.stop="remove(index,option)">
 																			<svg class="fill-current h-4 w-4 " role="button" viewBox="0 0 20 20">
@@ -206,16 +206,15 @@
             close() { this.show = false },
             isOpen() { return this.show === true },
             select(index, event) {
-
               if (!this.options[index].selected) {
 
                 this.options[index].selected = true;
                 this.options[index].element = event.target;
                 this.selected.push(index);
-
               } else {
                 this.selected.splice(this.selected.lastIndexOf(index), 1);
-                this.options[index].selected = false
+                this.options[index].selected = false;
+                selectedOptions.splice(index, 1);
               }
             },
             remove(index, option) {
@@ -224,6 +223,7 @@
               selectedOptions.splice(index, 1);
             },
             loadOptions() {
+              const preSelected = @json($account->brand_popular_by);
               const options = document.getElementById('brand_popular_by').options;
               for (let i = 0; i < options.length; i++) {
                 this.options.push({
@@ -232,6 +232,17 @@
                   selected: options[i].getAttribute('selected') != null ? options[i].getAttribute('selected') : false
                 });
               }
+
+              console.log(preSelected, this.options)
+
+              preSelected.forEach((val, i) => {
+                this.options.forEach((item, idx) => {
+                  if(item.value === val) {
+                    item.selected = true;
+                    this.selected.push(idx);
+				  }
+				})
+			  })
             },
             selectedValues(){
               return this.selected.map((option)=>{
