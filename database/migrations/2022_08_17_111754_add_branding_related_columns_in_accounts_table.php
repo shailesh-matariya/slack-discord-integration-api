@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Account;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -20,7 +21,7 @@ return new class extends Migration
             $table->string('brand_primary_color')->nullable()->after('is_anonymize');
             $table->string('brand_secondary_color')->nullable()->after('is_anonymize');
             $table->string('brand_logo')->nullable()->after('is_anonymize');
-            $table->string('brand_popular_by')->nullable()->after('is_anonymize');
+            $table->string('brand_popular_by')->default(json_encode(Account::BRAND_POPULAR))->after('is_anonymize');
         });
     }
 

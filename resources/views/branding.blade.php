@@ -162,7 +162,7 @@
                     'brand_custom_code' : '{{$account->brand_custom_code}}',
                     'brand_primary_color' : '{{$account->brand_primary_color}}',
                     'brand_secondary_color' : '{{$account->brand_secondary_color}}',
-                    'brand_popular_by' : '{{$account->brand_popular_by}}',
+                    'brand_popular_by' : @json($account->brand_popular_by),
                 },
                 formMessage: "",
                 submitForm() {

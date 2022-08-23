@@ -26,7 +26,7 @@ class BrandingController extends Controller
             'brand_primary_color' => ['nullable'],
             'brand_secondary_color' => ['nullable'],
             'brand_logo' => ['nullable', 'file'],
-            'brand_popular_by' => ['nullable', 'array'],
+            'brand_popular_by' => ['nullable'],
             'brand_popular_by.*' => ["in:".implode(',',Account::BRAND_POPULAR)],
         ], [], [
             'brand_custom_domain' => 'Custom domain',
@@ -43,7 +43,10 @@ class BrandingController extends Controller
         }
 
         $account = Account::find($request->account_id);
-        $account->update($request->only(['brand_custom_domain', 'brand_embed_url', 'brand_custom_code', 'brand_primary_color', 'brand_secondary_color', 'brand_popular_by']));
+        if ($request->brand_popular_by){
+            $account->brand_popular_by = array_unique(array_filter(explode(',',$request->brand_popular_by)));
+        }
+        $account->update($request->only(['brand_custom_domain', 'brand_embed_url', 'brand_custom_code', 'brand_primary_color', 'brand_secondary_color']));
 
         if ($request->hasFile('brand_logo')) {
             $uploadedFile = $request->file('brand_logo');
