@@ -7,10 +7,11 @@ use App\Rules\Domain;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class BrandingController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $account = Account::find(1);
         return view('branding',compact('account'));
@@ -21,7 +22,7 @@ class BrandingController extends Controller
         $validator = Validator::make($request->all(), [
             'account_id' => ['required', 'exists:accounts,id'],
             'brand_custom_domain' => ['nullable', 'string', new Domain],
-            'brand_embed_url' => ['nullable', 'url'],
+            'brand_embed_url' => ['nullable', 'url', Rule::unique('accounts','brand_embed_url')->ignore($request->account_id)],
             'brand_custom_code' => ['nullable'],
             'brand_primary_color' => ['nullable'],
             'brand_secondary_color' => ['nullable'],
@@ -43,10 +44,8 @@ class BrandingController extends Controller
         }
 
         $account = Account::find($request->account_id);
-        if ($request->brand_popular_by){
-            $account->brand_popular_by = array_unique(array_filter(explode(',',$request->brand_popular_by)));
-        }
-        $account->update($request->only(['brand_custom_domain', 'brand_embed_url', 'brand_custom_code', 'brand_primary_color', 'brand_secondary_color']));
+        $account->brand_popular_by = array_unique(array_filter(explode(',',$request->brand_popular_by)));
+        $account->update($request->only(['brand_custom_domain', 'brand_embed_url', 'brand_custom_code', 'brand_primary_color', 'brand_secondary_color', 'brand_cname_records']));
 
         if ($request->hasFile('brand_logo')) {
             $uploadedFile = $request->file('brand_logo');
