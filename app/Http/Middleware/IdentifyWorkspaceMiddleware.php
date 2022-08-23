@@ -24,15 +24,13 @@ class IdentifyWorkspaceMiddleware
         $account = null;
         $company_domain = parse_url(config('app.company_slack_url'), PHP_URL_HOST);
         $domain = parse_url($request->input('url'), PHP_URL_HOST);
-        if (App::environment('production') && $domain == $company_domain) {
+
+        if ($domain == $company_domain) {
             $segments = array_values(array_filter(explode('/', parse_url($request->input('url'), PHP_URL_PATH))));
             if (isset($segments[0]) && isset($segments[1]) && $segments[0] == 't') {
                 $account = Account::query()->where('team_id', $segments[1])->first();
             } elseif (isset($segments[0]) && isset($segments[1]) && $segments[0] == 'c') {
-                $account_user = DB::table('account_users')->where('username', $segments[1])->first();
-                if ($account_user) {
-                    $account = Account::find($account_user->account_id);
-                }
+                $account = Account::query()->where('workspace', $segments[1])->first();
             }
         } elseif ($request->input('url')) {
             $account = Account::query()->whereRaw(" SUBSTRING_INDEX(SUBSTRING_INDEX(SUBSTRING_INDEX(SUBSTRING_INDEX(brand_embed_url, '/', 3), '://', -1), '/', 1), '?', 1) = '$domain' ")->first();

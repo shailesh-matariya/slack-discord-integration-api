@@ -214,6 +214,6 @@ return [
         // 'ExampleClass' => App\Example\ExampleClass::class,
     ])->toArray(),
 
-    'company_slack_url' => env('COMPANY_SLACK_URL', 'slack.cloudcraftsmenship.io')
+    'company_slack_url' => env('COMPANY_SLACK_URL', 'http://slack.cloudcraftsmanship.io')
 
 ];
