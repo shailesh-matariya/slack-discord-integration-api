@@ -7,6 +7,7 @@ use App\Rules\Domain;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class BrandingController extends Controller
 {
@@ -21,7 +22,7 @@ class BrandingController extends Controller
         $validator = Validator::make($request->all(), [
             'account_id' => ['required', 'exists:accounts,id'],
             'brand_custom_domain' => ['nullable', 'string', new Domain],
-            'brand_embed_url' => ['nullable', 'url'],
+            'brand_embed_url' => ['nullable', 'url', Rule::unique('accounts','brand_embed_url')->ignore($request->account_id)],
             'brand_custom_code' => ['nullable'],
             'brand_primary_color' => ['nullable'],
             'brand_secondary_color' => ['nullable'],
