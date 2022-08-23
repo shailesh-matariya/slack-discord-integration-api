@@ -24,4 +24,5 @@ Route::middleware('workspace')->group(function() {
     Route::get('/slack-channels', [SlackController::class, 'getChannels']);
     Route::get('/slack-users', [SlackController::class, 'getUsers']);
     Route::get('/channel-messages', [SlackController::class, 'getChannelMessages']);
+    Route::get('/brand-config', [SlackController::class, 'getBrandConfig']);
 });

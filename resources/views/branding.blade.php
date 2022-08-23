@@ -8,11 +8,13 @@
 						<div class="grid grid-cols-1">
 							<div class="flex flex-col">
 								<div class="p-3 mb-3 rounded border-gray-200 border-solid border bg-slate-50">
-									<label class="block text-sm font-bold leading-5 mb-1">Custom Domain</label>
+									<label class="block text-sm font-bold leading-5 mb-1">Custom URL</label>
 {{--									<div class="text-sm mb-2 text-gray-600">Unique domain to redirect to.</div>--}}
-									<div class="mt-1 relative rounded-md shadow-sm">
-										<input type="text" name="brand_custom_domain" x-model="formData.brand_custom_domain"  class="focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300
-										rounded-md" placeholder="example.com">
+									<div class="mt-1 flex rounded-md shadow-sm">
+										<span class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 sm:text-sm"> http://slack.cloudcraftsmen.io/
+										</span>
+										<input type="text" name="brand_custom_domain" x-model="formData.brand_custom_domain" class="flex-1 min-w-0 block w-full px-3 py-2 rounded-none rounded-r-md focus:ring-indigo-500
+										focus:border-indigo-500 sm:text-sm border-gray-300" placeholder="username">
 									</div>
 								</div>
                                 <div class="p-3 mb-3 rounded border-gray-200 border-solid border bg-slate-50">
@@ -22,6 +24,13 @@
                                         <input type="text" name="brand_embed_url" x-model="formData.brand_embed_url" class="focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300
 										rounded-md" placeholder="http://example.com">
                                     </div>
+									<label class="block text-sm font-bold leading-5 mb-1 mt-3">CName Records</label>
+									{{--                                    <div class="text-sm mb-2 text-gray-600">Unique domain to redirect to.</div>--}}
+									<div class="mt-1 relative rounded-md shadow-sm">
+										<textarea rows="3" name="comment" id="comment" x-model="formData.brand_cname_records" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block
+										w-full sm:text-sm border-gray-300
+										rounded-md"></textarea>
+									</div>
                                 </div>
 								<div class="p-3 mb-3 rounded border-gray-200 border-solid border bg-slate-50">
 									<label class="block text-sm font-bold leading-5 mb-1">Custom Code</label>
@@ -98,17 +107,17 @@
 														<div class="text-gray-300 w-8 py-1 pl-2 pr-1 border-l flex items-center border-gray-200 svelte-1l8159u">
 
 															<button type="button" x-show="isOpen() === true" x-on:click="open" class="cursor-pointer w-6 h-6 text-gray-600 outline-none focus:outline-none">
-																<svg version="1.1" class="fill-current h-4 w-4" viewBox="0 0 20 20">
-																	<path d="M17.418,6.109c0.272-0.268,0.709-0.268,0.979,0s0.271,0.701,0,0.969l-7.908,7.83
-	c-0.27,0.268-0.707,0.268-0.979,0l-7.908-7.83c-0.27-0.268-0.27-0.701,0-0.969c0.271-0.268,0.709-0.268,0.979,0L10,13.25
-	L17.418,6.109z" />
-																</svg>
-															</button>
-															<button type="button" x-show="isOpen() === false" @click="close" class="cursor-pointer w-6 h-6 text-gray-600 outline-none focus:outline-none">
 																<svg class="fill-current h-4 w-4" viewBox="0 0 20 20">
 																	<path d="M2.582,13.891c-0.272,0.268-0.709,0.268-0.979,0s-0.271-0.701,0-0.969l7.908-7.83
 	c0.27-0.268,0.707-0.268,0.979,0l7.908,7.83c0.27,0.268,0.27,0.701,0,0.969c-0.271,0.268-0.709,0.268-0.978,0L10,6.75L2.582,13.891z
 	" />
+																</svg>
+															</button>
+															<button type="button" x-show="isOpen() === false" @click="close" class="cursor-pointer w-6 h-6 text-gray-600 outline-none focus:outline-none">
+																<svg version="1.1" class="fill-current h-4 w-4" viewBox="0 0 20 20">
+																	<path d="M17.418,6.109c0.272-0.268,0.709-0.268,0.979,0s0.271,0.701,0,0.969l-7.908,7.83
+	c-0.27,0.268-0.707,0.268-0.979,0l-7.908-7.83c-0.27-0.268-0.27-0.701,0-0.969c0.271-0.268,0.709-0.268,0.979,0L10,13.25
+	L17.418,6.109z" />
 																</svg>
 															</button>
 														</div>
@@ -163,6 +172,7 @@
                     'brand_primary_color' : '{{$account->brand_primary_color}}',
                     'brand_secondary_color' : '{{$account->brand_secondary_color}}',
                     'brand_popular_by' : @json($account->brand_popular_by),
+				  	'brand_cname_records': '{{$account->brand_cname_records}}'
                 },
                 formMessage: "",
                 submitForm() {

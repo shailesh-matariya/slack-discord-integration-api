@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Account;
 use App\Models\AccountChannel;
 use App\Models\AccountUser;
 use App\Models\Message;
@@ -51,6 +52,24 @@ class SlackController extends Controller
         return response()->json([
             'status' => true,
             'message_collection' => $messages
+        ]);
+    }
+
+    //Get brand config
+    public function getBrandConfig(Request $request): \Illuminate\Http\JsonResponse
+    {
+        return response()->json([
+            'status' => true,
+            'brand_config' => config('auth.account')->only([
+                'brand_popular_by',
+                'brand_logo',
+                'brand_logo',
+                'brand_primary_color',
+                'brand_custom_code',
+                'brand_cname_records',
+                'brand_embed_url',
+                'brand_custom_domain'
+            ])
         ]);
     }
 }

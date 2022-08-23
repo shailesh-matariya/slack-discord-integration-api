@@ -9,7 +9,7 @@
 							<p class="mt-5 text-xl text-gray-500 sm:text-center">Start using for free.<br>Paid plans unlock additional features.</p>
 						</div>
 						<div class="mt-12 space-y-4 sm:mt-16 sm:space-y-0 sm:grid sm:grid-cols-2 sm:gap-6 lg:max-w-4xl lg:mx-auto xl:max-w-none xl:mx-0 xl:grid-cols-2">
-							<div class="border-solid border-1 border border-gray-200 rounded-lg shadow-lg divide-y divide-gray-200">
+							<div class="border-solid border-1 border border-gray-200 rounded-lg shadow-lg">
 								<div class="p-6 border-0">
 									<h2 class="text-lg leading-6 font-medium text-gray-900">Free edition</h2>
 									<p class="mt-4 text-sm text-gray-500">Great for non profits and open source communities</p>
@@ -63,11 +63,11 @@
 									</ul>
 								</div>
 							</div>
-							<div class="border-solid border-1 border border-gray-200 rounded-lg shadow-lg divide-y divide-gray-200">
+							<div class="border-solid border-1 border border-gray-200 rounded-lg shadow-lg">
 								<div class="p-6">
 									<h2 class="text-lg leading-6 font-medium text-gray-900">Premium</h2>
 									<p class="mt-4 text-sm text-gray-500">Built for companies</p><p class="mt-8"></p>
-									<a class="shadow-sm mt-8 block w-full bg-blue-500 border border-blue-500 rounded-md py-2 text-sm font-semibold text-white text-center hover:bg-blue-600" href="mailto:help@linen.dev?subject=Linen%20Premium">Contact Us</a>
+									<a class="shadow-sm mt-8 block w-full bg-blue-500 border border-blue-500 rounded-md py-2 text-sm font-semibold text-white text-center hover:bg-blue-600" href="mailto:help@linen.dev?subject=Linen%20Premium">$100 USD/month</a>
 								</div>
 								<div class="pt-6 pb-8 px-6">
 									<h3 class="text-xs font-medium text-gray-900 tracking-wide uppercase">What's included</h3>
