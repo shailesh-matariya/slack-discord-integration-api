@@ -24,7 +24,7 @@ class IdentifyWorkspaceMiddleware
         $account = null;
         $company_domain = parse_url(config('app.company_slack_url'), PHP_URL_HOST);
         $domain = parse_url($request->input('url'), PHP_URL_HOST);
-        if (App::environment('local') && $domain == $company_domain) {
+        if (App::environment('production') && $domain == $company_domain) {
             $segments = array_values(array_filter(explode('/', parse_url($request->input('url'), PHP_URL_PATH))));
             if (isset($segments[0]) && isset($segments[1]) && $segments[0] == 't') {
                 $account = Account::query()->where('team_id', $segments[1])->first();
