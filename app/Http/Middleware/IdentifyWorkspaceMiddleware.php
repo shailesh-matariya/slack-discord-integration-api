@@ -13,8 +13,8 @@ class IdentifyWorkspaceMiddleware
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
+     * @param \Illuminate\Http\Request $request
+     * @param \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse) $next
      *
      * @return \Illuminate\Http\JsonResponse
      */
@@ -22,17 +22,20 @@ class IdentifyWorkspaceMiddleware
     {
 //        $account = Account::query()->where([['platform', '=', $request['platform']], ['team_id', '=' , $request['team_id']]])->first();
         $account = null;
-        if (App::environment('local') && $request->server('HTTP_REFERER') == config('app.company_slack_url')) {
-            if ($request->segment(1)=='t') {
-                $account = Account::query()->where('team_id', $request->segment(2))->first();
-            } elseif ($request->segment(1)=='c') {
-                $account_user = DB::table('account_users')->where('username', $request->segment(2))->first();
+        $company_domain = parse_url(config('app.company_slack_url'), PHP_URL_HOST);
+        $domain = parse_url($request->input('url'), PHP_URL_HOST);
+        if (App::environment('local') && $domain == $company_domain) {
+            $segments = array_values(array_filter(explode('/', parse_url($request->input('url'), PHP_URL_PATH))));
+            if (isset($segments[0]) && isset($segments[1]) && $segments[0] == 't') {
+                $account = Account::query()->where('team_id', $segments[1])->first();
+            } elseif (isset($segments[0]) && isset($segments[1]) && $segments[0] == 'c') {
+                $account_user = DB::table('account_users')->where('username', $segments[1])->first();
                 if ($account_user) {
                     $account = Account::find($account_user->account_id);
                 }
             }
-        }elseif ($request->server('HTTP_REFERER')) {
-            $account = Account::query()->where('brand_embed_url', $request->server('HTTP_REFERER'))->first();
+        } elseif ($request->input('url')) {
+            $account = Account::query()->whereRaw(" SUBSTRING_INDEX(SUBSTRING_INDEX(SUBSTRING_INDEX(SUBSTRING_INDEX(brand_embed_url, '/', 3), '://', -1), '/', 1), '?', 1) = '$domain' ")->first();
         }
 
         if ($account) {
