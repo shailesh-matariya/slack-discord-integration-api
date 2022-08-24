@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\User;
+
 return [
 
     /*
@@ -37,6 +39,12 @@ return [
         'signing_secret' => env('SLACK_SIGNING_SECRET', null),
         'verification' => env('SLACK_VERIFICATION', null),
         'redirect_url' => env('SLACK_REDIRECT_URL', null)
+    ],
+
+    'stripe' => [
+        'model' => User::class,
+        'key' => env('STRIPE_KEY', null),
+        'secret' => env('STRIPE_SECRET', null),
     ]
 
 ];
