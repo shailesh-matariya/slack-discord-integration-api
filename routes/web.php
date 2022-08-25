@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BrandingController;
 use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\SubscriptionController;
 use App\Http\Middleware\VerifyCsrfToken;
 use App\Jobs\SlackSyncJob;
 use App\Models\Account;
@@ -61,4 +62,8 @@ Route::middleware([
 
     Route::post('set-branding-data', [BrandingController::class, 'setBrandingData'])
         ->name('setBrandingData');
+
+    Route::get('subscribe/checkout', [SubscriptionController::class, 'subscribeCheckout'])->name('subscribe.checkout');
+    Route::get('subscribe/success', [SubscriptionController::class, 'subscribeSuccess'])->name('subscribe.success');
+    Route::get('subscribe/fail', [SubscriptionController::class, 'subscribeFail'])->name('subscribe.fail');
 });
