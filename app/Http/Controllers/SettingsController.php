@@ -24,7 +24,8 @@ class SettingsController extends Controller
         $discordUrl = $this->getDiscordUrl();
         $channels = AccountChannel::query()->get();
         $defaultChannel = $channels->where('is_default', true)->first();
-        return view('settings', compact('account', 'slackUrl', 'discordUrl', 'channels', 'defaultChannel'));
+        $subscribed = Auth::user()->subscribed();
+        return view('settings', compact('account', 'slackUrl', 'discordUrl', 'channels', 'defaultChannel', 'subscribed'));
     }
 
     private function getSlackUrl(): string
@@ -65,7 +66,46 @@ class SettingsController extends Controller
 
         $response = json_decode($response->body());
 
-        $user = User::first(); // Auth::user();
+        $user = Auth::user();
+        $account = $user->account;
+
+        if ($account) {
+            return redirect(route('settings'));
+        }
+
+        $account = new Account();
+        $account->user()->associate($user);
+        $account->platform = 'slack';
+        $account->team_id = $response->team->id;
+        $account->workspace = $response->team->name;
+        $account->app_id = $response->app_id;
+        $account->auth_user = $response->authed_user->id;
+        $account->user_access_token = $response->authed_user->access_token;
+        $account->bot_access_token = $response->access_token;
+        $account->bot_user = $response->bot_user_id;
+        $account->bot_scope = $response->scope;
+        $account->user_scope = $response->authed_user->scope;
+        $account->save();
+
+        dispatch_sync(new SlackSyncJob($account));
+
+        return redirect(route('settings'));
+    }
+
+    public function discordCodeHandle(Request $request): RedirectResponse
+    {
+        $url = 'https://slack.com/api/oauth.v2.access';
+
+        $response = Http::get($url, [
+            'client_id' => config('services.slack.client_id'),
+            'client_secret' => config('services.slack.secret'),
+            'code' => $request->code,
+            'redirect_uri' => config('services.slack.redirect_url')
+        ]);
+
+        $response = json_decode($response->body());
+
+        $user = Auth::user();
         $account = $user->account;
 
         if ($account) {
@@ -93,7 +133,18 @@ class SettingsController extends Controller
 
     public function getDiscordUrl(): string
     {
-        return '';
+        $scopes = implode("%20", [
+            'guilds',
+            'guilds.members.read',
+            'bot'
+        ]);
+
+        $discordClientId = config('services.discord.client_id');
+        $redirectUrl = config('services.discord.redirect_url');
+        $permissionId = config('services.discord.permission_id');
+        $state = 'patel.shailesh987@gmail.com' . '-' . bcrypt(1);
+
+        return "https://discord.com/api/oauth2/authorize?response_type=code&client_id={$discordClientId}&scope={$scopes}&redirect_uri={$redirectUrl}&prompt=consent&state={$state}&permissions={$permissionId}";
     }
 
     public function setChannelVisibility(Request $request)

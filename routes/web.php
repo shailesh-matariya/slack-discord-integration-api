@@ -34,6 +34,7 @@ Route::get('run', function () {
 
 Route::get('/getSlackUrl', [SettingsController::class, 'getSlackUrl']);
 Route::get('/redirect/slack', [SettingsController::class, 'slackCodeHandle']);
+Route::get('/redirect/discord', [SettingsController::class, 'discordCodeHandle']);
 
 Route::middleware([
     'auth:sanctum',
@@ -44,9 +45,7 @@ Route::middleware([
 
     Route::get('/branding', [BrandingController::class, 'index'])->name('branding');
 
-    Route::get('/plans', function () {
-        return view('plans');
-    })->name('plans');
+    Route::get('/plans', [SubscriptionController::class, 'plans'])->name('plans');
 
     Route::post('/set-channel-visibility', [SettingsController::class, 'setChannelVisibility'])
         ->name('setChannelVisibility')
@@ -66,4 +65,5 @@ Route::middleware([
     Route::get('subscribe/checkout', [SubscriptionController::class, 'subscribeCheckout'])->name('subscribe.checkout');
     Route::get('subscribe/success', [SubscriptionController::class, 'subscribeSuccess'])->name('subscribe.success');
     Route::get('subscribe/fail', [SubscriptionController::class, 'subscribeFail'])->name('subscribe.fail');
+    Route::get('subscribe/cancel', [SubscriptionController::class, 'subscribeCancel'])->name('subscribe.cancel');
 });

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Account;
 use App\Rules\Domain;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -14,7 +15,9 @@ class BrandingController extends Controller
     public function index(Request $request)
     {
         $account = Account::find(1);
-        return view('branding',compact('account'));
+        $subscribed = Auth::user()->subscribed();
+
+        return view('branding',compact('account', 'subscribed'));
     }
 
     public function setBrandingData(Request $request)
