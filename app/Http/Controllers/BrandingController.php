@@ -60,7 +60,7 @@ class BrandingController extends Controller
                 $filename
             );
             if ($path) {
-                if (Storage::exists($account->brand_logo)){
+                if ($account->brand_logo && Storage::exists($account->brand_logo)){
                     Storage::delete($account->brand_logo);
                 }
                 $account->brand_logo = $path;
