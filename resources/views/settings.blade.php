@@ -7,9 +7,11 @@
 					<div class="grid grid-cols-1 gap-4">
 						<div class="grid grid-cols-1 divide-y divide-gray-200 divide-solid">
 							<div class="bg-white">
+								<div class="mt-3 px-4 py-5 sm:p-6 bg-blue-200 border border-blue-500">
+									URL here
+								</div>
 								<div class="px-4 py-5 sm:p-6">
 									<div class="flex">
-
                                         @if ($account)
                                             <div class="grow">
                                                 <h3 class="text-lg leading-6 font-medium text-gray-900">

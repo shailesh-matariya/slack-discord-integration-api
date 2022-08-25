@@ -125,11 +125,16 @@ class SlackSyncJob implements ShouldQueue
                     $messageModel->channel()->associate($accountChannel);
                     $messageModel->type = $message->type;
                     $messageModel->ts = $message->ts;
+                    $messageModel->thread_ts = $message->thread_ts;
                     $messageModel->userId = $message->user;
                 }
 
                 $messageModel->message = $message->text;
                 $messageModel->save();
+
+                if (! empty($message->thread_ts)) {
+                    $this->syncThreadMessages($messageModel, $accountChannel);
+                }
 
                 if (! empty($message->files)) {
                     $attachments = [];
@@ -156,6 +161,67 @@ class SlackSyncJob implements ShouldQueue
 
         if ($messageResponse->has_more) {
             $this->syncMessages($accountChannel);
+        }
+    }
+
+    private function syncThreadMessages(Message $message, AccountChannel $accountChannel)
+    {
+        $payload = [
+            'channel' => $accountChannel->channelId,
+            'ts' => $message->ts
+        ];
+
+        $lastTS = '';
+        if ($accountChannel->last_message_timestamp) {
+            $payload['oldest'] = $accountChannel->last_message_timestamp;
+            $lastTS = $accountChannel->last_message_timestamp;
+        }
+
+        $messageResponse = $this->userClient->get('https://slack.com/api/conversations.replies', $payload);
+        $messageResponse = json_decode($messageResponse->body());
+
+        foreach ($messageResponse->messages as $message) {
+            $user = $this->users->where('userId', $message->user)->first();
+
+            if ($user) {
+                $messageModel = Message::where('ts', $message->ts)->first();
+
+                if (! $messageModel) {
+                    $messageModel = new Message();
+                    $messageModel->channel()->associate($accountChannel);
+                    $messageModel->type = $message->type;
+                    $messageModel->ts = $message->ts;
+                    $messageModel->thread_ts = $message->thread_ts;
+                    $messageModel->userId = $message->user;
+                }
+
+                $messageModel->message = $message->text;
+                $messageModel->save();
+
+                if (! empty($message->files)) {
+                    $attachments = [];
+                    foreach ($message->files as $file) {
+                        $attachments[] = new Attachment([
+                            'url' => $file->permalink,
+                            'file_name' => $file->name,
+                            'description' => $file->mimetype,
+                            'size' => $file->size,
+                        ]);
+                    }
+
+                    $messageModel->attachments()->saveMany($attachments);
+                }
+            }
+            $lastTS = $lastTS > $message->ts ? $lastTS : $message->ts;
+        }
+
+        if (isset($lastTS)) {
+            $accountChannel->last_message_timestamp = $lastTS;
+            $accountChannel->save();
+        }
+
+        if ($messageResponse->has_more) {
+            $this->syncThreadMessages($message, $accountChannel);
         }
     }
 }

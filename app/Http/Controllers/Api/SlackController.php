@@ -7,6 +7,7 @@ use App\Models\Account;
 use App\Models\AccountChannel;
 use App\Models\AccountUser;
 use App\Models\Message;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
@@ -45,7 +46,11 @@ class SlackController extends Controller
     {
         $messages = Message::query()
             ->where('account_channel_id', $request['channel_id'])
-            ->with('attachments')
+            ->where(function (Builder $q) {
+                $q->whereRaw('ts = thread_ts')
+                    ->orWhereNull('thread_ts');
+            })
+            ->with(['attachments', 'replies'])
             ->orderBy('ts', 'desc')
             ->paginate(40);
 
