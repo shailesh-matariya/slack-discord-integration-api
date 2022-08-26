@@ -15,7 +15,7 @@
 									<p class="mt-4 text-sm text-gray-500">Great for non profits and open source communities</p>
 									<p class="mt-8"></p>
                                     @if($subscribed)
-                                        <button @if($onGracePeriod) disabled @endif  class="shadow-sm mt-8 block w-full bg-blue-500 border border-blue-500 rounded-md py-2 text-sm font-semibold text-white text-center disabled:opacity-50 "
+                                        <button @if($onGracePeriod) disabled @endif  class="shadow-sm mt-8 block w-full bg-blue-500 border border-blue-500 rounded-md py-2 text-sm font-semibold text-white text-center {{ $onGracePeriod ? 'disabled:opacity-50' : '' }} "
                                                 @if(!$onGracePeriod) href="{{route('subscribe.cancel')}} @endif"
                                         >
                                             Back to free plan
