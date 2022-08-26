@@ -54,14 +54,14 @@ class BrandingController extends Controller
             $uploadedFile = $request->file('brand_logo');
             $filename = time() . $uploadedFile->getClientOriginalName();
 
-            $path = Storage::putFileAs(
+            $path = Storage::disk('public')->putFileAs(
                 Account::BRAND_LOGO_PATH,
                 $uploadedFile,
                 $filename
             );
             if ($path) {
-                if ($account->brand_logo && Storage::exists($account->brand_logo)){
-                    Storage::delete($account->brand_logo);
+                if ($account->brand_logo && Storage::disk('public')->exists($account->brand_logo)){
+                    Storage::disk('public')->delete($account->brand_logo);
                 }
                 $account->brand_logo = $path;
                 $account->save();
