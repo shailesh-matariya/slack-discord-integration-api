@@ -68,7 +68,10 @@ class BrandingController extends Controller
             }
         }
 
-        return response()->json(['msg' => 'Success!', 'status' => true]);
+        return response()->json([
+            'status' => true,
+            'message' => 'Saved successfully!'
+        ]);
     }
 
 }
