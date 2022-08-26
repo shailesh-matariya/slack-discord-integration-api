@@ -35,7 +35,7 @@ class SubscriptionController extends Controller
     public function subscribeCheckout(Request $request)
     {
         $user = $request->user();
-        $plan = Plans::where('identifier', 'premium_usd')->first();
+        $plan = Plans::first();
 
         $param = [
             'success_url' => route('subscribe.success'),
