@@ -191,7 +191,7 @@ class SlackSyncJob implements ShouldQueue
                     $messageModel->channel()->associate($accountChannel);
                     $messageModel->type = $message->type;
                     $messageModel->ts = $message->ts;
-                    $messageModel->thread_ts = $message->thread_ts;
+                    $messageModel->thread_ts = $message->thread_ts ?? null;
                     $messageModel->userId = $message->user;
                 }
 
