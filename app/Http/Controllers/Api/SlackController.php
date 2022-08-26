@@ -70,6 +70,7 @@ class SlackController extends Controller
                 'brand_logo',
                 'brand_logo_url',
                 'brand_primary_color',
+                'brand_secondary_color',
                 'brand_custom_code',
                 'brand_cname_records',
                 'brand_embed_url',
