@@ -68,7 +68,7 @@ class SlackController extends Controller
             'brand_config' => config('auth.account')->only([
                 'brand_popular_by',
                 'brand_logo',
-                'brand_logo',
+                'brand_logo_url',
                 'brand_primary_color',
                 'brand_custom_code',
                 'brand_cname_records',
