@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Storage;
 
 class Account extends Model
 {
@@ -22,6 +23,17 @@ class Account extends Model
     protected $casts = [
         'brand_popular_by' => 'array'
     ];
+
+    protected $appends = ['brand_logo_url'];
+
+    public function getBrandLogoUrlAttribute(): ?string
+    {
+        if ($this->brand_logo && Storage::disk('public')->exists($this->brand_logo))
+        {
+            return Storage::disk('public')->url($this->brand_logo);
+        }
+        return null;
+    }
 
     public function user(): BelongsTo
     {
