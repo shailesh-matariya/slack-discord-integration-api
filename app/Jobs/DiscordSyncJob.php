@@ -89,6 +89,8 @@ class DiscordSyncJob implements ShouldQueue
         $channels = json_decode($channelResponse->body());
 
         foreach ($channels as $channel) {
+            if ($channel->type==4) continue;
+
             $accountChannel = AccountChannel::where('channelId', $channel->id)->first();
 
             if (!$accountChannel) {
@@ -98,13 +100,14 @@ class DiscordSyncJob implements ShouldQueue
             }
             $accountChannel->name = $channel->name;
             $accountChannel->is_private = false;
+            $accountChannel->is_visible = true;
             $accountChannel->save();
 
             $this->syncMessages($accountChannel);
         }
     }
 
-    private function syncMessages(AccountChannel $accountChannel, $channelOrThreadId=null)
+    private function syncMessages(AccountChannel $accountChannel, $threadId=null, $threadTimeStamp=null)
     {
         // Sync channel or thread messages.
         $messageLimit = 100;
@@ -116,10 +119,10 @@ class DiscordSyncJob implements ShouldQueue
                 'before' => 'messageId',*/
                 'after' => $afterMessage,
             ];
-            if (!$channelOrThreadId){
-                $channelOrThreadId = $accountChannel->channelId;
+            if (!$threadId){
+                $threadId = $accountChannel->channelId;
             }
-            $messageResponse = $this->botClient->get("https://discord.com/api/channels/{$channelOrThreadId}/messages", $payload);
+            $messageResponse = $this->botClient->get("https://discord.com/api/channels/{$threadId}/messages", $payload);
             $messages = json_decode($messageResponse->body());
 
             if ($messages && is_array($messages) && !empty($messages)) {
@@ -143,10 +146,15 @@ class DiscordSyncJob implements ShouldQueue
                         if ($message->type==7){
                             $messageModel->message = "<@{$message->author->id}> has joined the channel";
                         }
+                        if ($threadTimeStamp){
+                            $messageModel->thread_ts = $threadTimeStamp;
+                        }
                         $messageModel->save();
 
                         if (!empty($message->thread)) {
-                            $this->syncMessages($accountChannel, $message->thread->id);
+                            $messageModel->ts .= ".".rand(0,999999);
+                            $messageModel->save();
+                            $this->syncMessages($accountChannel, $message->thread->id, $messageModel->ts);
                         }
 
                         if (!empty($message->attachments)) {
