@@ -21,7 +21,9 @@ class SettingsController extends Controller
     public function settings(): View
     {
         $account = Auth::user()->account;
-        config()->set('auth.account', $account);
+        if ($account) {
+            config()->set('auth.account', $account);
+        }
         $slackUrl = $this->getSlackUrl();
         $discordUrl = $this->getDiscordUrl();
         $channels = AccountChannel::query()->get();
