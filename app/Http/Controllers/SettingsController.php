@@ -167,6 +167,10 @@ class SettingsController extends Controller
         $channel->update([
                 'is_visible'=> $request->is_visible
             ]);
+        return response()->json([
+            'status' => true,
+            'message' => 'Saved successfully!'
+        ]);
     }
 
     public function setUserAnonymize(Request $request)
@@ -192,6 +196,10 @@ class SettingsController extends Controller
         ]);
         $channel->update([
             'is_default'=> $request->is_default
+        ]);
+        return response()->json([
+            'status' => true,
+            'message' => 'Saved successfully!'
         ]);
     }
 }

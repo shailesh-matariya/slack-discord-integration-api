@@ -7,7 +7,7 @@
 					<div class="grid grid-cols-1 gap-4">
 						<div class="grid grid-cols-1 divide-y divide-gray-200 divide-solid">
 							<div class="bg-white">
-								<div class="mt-3 px-4 py-5 sm:p-6 bg-blue-200 border border-blue-500">
+								<div class="mt-3 px-4 py-5 sm:p-6 bg-indigo-100 text-lg font-medium">
 									URL here
 								</div>
 								<div class="px-4 py-5 sm:p-6">
@@ -115,14 +115,17 @@
 
                                         @if($account)
                                             <div class="self-center">
-                                                <div class="mt-5 sm:mt-0 sm:ml-6 sm:flex-shrink-0 sm:flex sm:items-center" x-data="{ open: {{$account?->is_anonymize ? 'true' : 'false' }} }" x-init="$watch('open', (value,
+                                                <div class="{{ !$subscribed ? 'pointer-events-none' : ''}}  mt-5 sm:mt-0 sm:ml-6 sm:flex-shrink-0 sm:flex sm:items-center" x-data="{ open:
+{{$account?->is_anonymize ? 'true' : 'false' }} }"
+													 x-init="$watch('open', (value,
 											oldValue) =>
 											setUserAnonymize(value))">
                                                     <button @click="open = !open" x-bind:class="open ? 'bg-gray-700' : 'bg-gray-200'" class="relative inline-flex flex-shrink-0 h-6 w-11 border-2
 												border-transparent rounded-full cursor-pointer
 												transition-colors
 												ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300" id="headlessui-switch-3" role="switch" type="button"
-                                                            tabindex="0" aria-checked="false" aria-labelledby="headlessui-label-1" aria-describedby="headlessui-description-2">
+                                                            tabindex="0" aria-checked="false" aria-labelledby="headlessui-label-1" aria-describedby="headlessui-description-2 disabled:opacity-50" @if(!$subscribed)
+															disabled @endif>
                                                         <span x-bind:class="open ? 'translate-x-5' : 'translate-x-0'" class="inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200"></span>
                                                     </button>
                                                 </div>
@@ -330,7 +333,13 @@
               headers: {
                 'Content-type': 'application/json; charset=UTF-8',
               },
-            }).then((response) => response);
+            }).then((response) => response.json()) //2
+              .then((data) => {
+                toastr.success(data.message);
+              })
+              .catch(() => {
+                toastr.error('Something went wrong.');
+              });
 		}
 
 		function setUserAnonymize(value) {
@@ -343,7 +352,13 @@
             headers: {
               'Content-type': 'application/json; charset=UTF-8',
             },
-          }).then((response) => response);
+          }).then((response) => response.json()) //2
+            .then((data) => {
+              toastr.success(data.message);
+            })
+            .catch(() => {
+              toastr.error('Something went wrong.');
+            });
 		}
 
 		function setDefaultChannel(channel) {
@@ -356,7 +371,13 @@
             headers: {
               'Content-type': 'application/json; charset=UTF-8',
             },
-          }).then((response) => response);
+          }).then((response) => response.json()) //2
+            .then((data) => {
+              toastr.success(data.message);
+            })
+            .catch(() => {
+              toastr.error('Something went wrong.');
+            });
 		}
 	</script>
 </x-app-layout>

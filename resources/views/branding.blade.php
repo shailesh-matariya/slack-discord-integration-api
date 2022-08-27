@@ -13,30 +13,35 @@
 									<div class="mt-1 flex rounded-md shadow-sm">
 										<span class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 sm:text-sm"> http://slack.cloudcraftsmen.io/
 										</span>
-										<input type="text" name="brand_custom_domain" x-model="formData.brand_custom_domain" class="flex-1 min-w-0 block w-full px-3 py-2 rounded-none rounded-r-md focus:ring-indigo-500
-										focus:border-indigo-500 sm:text-sm border-gray-300" placeholder="username">
+										<input type="text" name="brand_custom_domain" x-model="formData.brand_custom_domain" class="disabled:opacity-50 flex-1 min-w-0 block w-full px-3 py-2
+										rounded-none rounded-r-md
+										focus:ring-indigo-500
+										focus:border-indigo-500 sm:text-sm border-gray-300" placeholder="username" @if(!$subscribed) disabled readonly value @endif>
 									</div>
 								</div>
                                 <div class="p-3 mb-3 rounded border-gray-200 border-solid border bg-slate-50">
                                     <label class="block text-sm font-bold leading-5 mb-1">Embed URL</label>
 {{--                                    <div class="text-sm mb-2 text-gray-600">Unique domain to redirect to.</div>--}}
                                     <div class="mt-1 relative rounded-md shadow-sm">
-                                        <input type="text" name="brand_embed_url" x-model="formData.brand_embed_url" class="focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300
-										rounded-md" placeholder="http://example.com">
+                                        <input type="text" name="brand_embed_url" x-model="formData.brand_embed_url" class="disabled:opacity-50 focus:ring-indigo-500 focus:border-indigo-500 block
+                                        w-full sm:text-sm border-gray-300
+										rounded-md" placeholder="http://example.com" @if(!$subscribed) disabled readonly value @endif>
                                     </div>
 									<label class="block text-sm font-bold leading-5 mb-1 mt-3">CName Records</label>
 									{{--                                    <div class="text-sm mb-2 text-gray-600">Unique domain to redirect to.</div>--}}
 									<div class="mt-1 relative rounded-md shadow-sm">
-										<textarea rows="3" name="comment" id="comment" x-model="formData.brand_cname_records" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block
+										<textarea rows="3" name="comment" id="comment" x-model="formData.brand_cname_records" class="disabled:opacity-50 shadow-sm focus:ring-indigo-500
+										focus:border-indigo-500 block
 										w-full sm:text-sm border-gray-300
-										rounded-md"></textarea>
+										rounded-md" @if(!$subscribed) disabled readonly value @endif></textarea>
 									</div>
                                 </div>
 								<div class="p-3 mb-3 rounded border-gray-200 border-solid border bg-slate-50">
 									<label class="block text-sm font-bold leading-5 mb-1">Custom Code</label>
 									<div class="text-sm mb-2 text-gray-600">Add custom code to be inserted before HEAD tag on your own generated site.</div>
 									<div class="mt-1 relative rounded-md shadow-sm">
-										<textarea name="brand_custom_code" x-model="formData.brand_custom_code" rows="3" class="shadow-sm block w-full focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border border-gray-300 rounded-md"></textarea>
+										<textarea name="brand_custom_code" x-model="formData.brand_custom_code" rows="3" class="shadow-sm block w-full focus:ring-indigo-500 focus:border-indigo-500
+										sm:text-sm border border-gray-300 rounded-md disabled:opacity-50" @if(!$subscribed) disabled readonly @endif></textarea>
 									</div>
 								</div>
 								<div class="p-3 mb-3 rounded border-gray-200 border-solid border bg-slate-50">
@@ -46,16 +51,18 @@
 										<div class="shrink w-36">
 											<label class="block text-sm font-normal leading-5 mb-1">Primary Color</label>
 											<div class="mt-1 relative rounded-md shadow-sm">
-												<input type="color" name="brand_primary_color" x-model="formData.brand_primary_color" class="h-9 py-0 px-0.5 bg-white focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm
-										border-gray-300 rounded-md" value="#E2E2E2">
+												<input type="color" name="brand_primary_color" x-model="formData.brand_primary_color" class="disabled:opacity-50 h-9 py-0 px-0.5 bg-white
+												focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm
+										border-gray-300 rounded-md" value="#E2E2E2" @if(!$subscribed) disabled readonly @endif>
 											</div>
 										</div>
 
 										<div class="shrink w-36">
 											<label for="brandColor" class="block text-sm font-normal leading-5 mb-1">Secondary Color</label>
 											<div class="mt-1 relative rounded-md shadow-sm">
-												<input type="color" name="brand_secondary_color" x-model="formData.brand_secondary_color" class="h-9 py-0 px-0.5 bg-white focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm
-										border-gray-300 rounded-md" value="#E2E2E2">
+												<input type="color" name="brand_secondary_color" x-model="formData.brand_secondary_color" class="disabled:opacity-50 h-9 py-0 px-0.5 bg-white
+												focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm
+										border-gray-300 rounded-md" value="#E2E2E2" @if(!$subscribed) disabled readonly @endif>
 											</div>
 										</div>
 									</div>
@@ -63,12 +70,12 @@
 								<div class="p-3 mb-3 rounded border-gray-200 border-solid border bg-slate-50">
 									<label for="logo" class="block text-sm font-bold leading-5 mb-1">Logo</label>
 									<div class="text-sm mb-2 text-gray-600">Logo of your brand.</div>
-									<input x-ref="brand_logo"  type="file" name="brand_logo"  style="display:none">
+									<input x-ref="brand_logo"  type="file" name="brand_logo"  style="display:none" class="disabled:opacity-50" @if(!$subscribed) disabled readonly @endif>
 									<button
                                         @click="$refs.brand_logo.click()"
                                         type="button"
-                                        class="font-medium rounded-lg text-sm px-5 py-2.5 mb-2 focus:ring-4 focus:outline-none text-black bg-gray-200"
-                                    >Upload file</button>
+                                        class="font-medium rounded-lg text-sm px-5 py-2.5 mb-2 focus:ring-4 focus:outline-none text-black bg-gray-200 disabled:opacity-50"
+										@if(!$subscribed) disabled readonly @endif>Upload file</button>
 								</div>
                                 <div class="p-3 mb-3 rounded border-gray-200 border-solid border bg-slate-50">
                                     <label for="logo" class="block text-sm font-bold leading-5 mb-1">Most popular by</label>
@@ -79,11 +86,11 @@
                                     </select>
 
 									<div x-data="dropdown()" x-init="loadOptions()" class="w-full md:w-1/2 flex flex-col items-center">
-										<input name="values" type="hidden" x-bind:value="selectedValues()">
-										<div class="inline-block relative w-80">
+										<input name="values" type="hidden" x-bind:value="selectedValues()" class="disabled:opacity-50" @if(!$subscribed) disabled readonly @endif>
+										<div class="{{ !$subscribed ? 'opacity-50' : ''}} inline-block relative w-80">
 											<div class="flex flex-col items-center relative">
-												<div x-on:click="open" class="w-full">
-													<div class="my-2 p-1 flex border border-gray-200 bg-white rounded">
+												<div x-on:click="open" class="{{ !$subscribed ? 'pointer-events-none' : ''}} w-full">
+													<div class="my-2 p-1 flex border border-gray-200 bg-white rounded disabled:opacity-50">
 														<div class="flex flex-auto flex-wrap">
 															<template x-for="(option,index) in selected" :key="options[option].value">
 																<div class="flex justify-center items-center m-1 font-medium py-1 px-1 bg-white rounded bg-gray-100 border">
@@ -150,7 +157,8 @@
 									</div>
                                 </div>
 								<div class="flex justify-end">
-									<button type="submit" class="font-medium rounded-lg text-sm px-5 py-2.5 mb-2 focus:ring-4 focus:outline-none text-white bg-yellow-600 hover:bg-yellow-500 focus:ring-yellow-600">Upgrade your account</button>
+									<button type="submit" class="font-medium rounded-lg text-sm px-5 py-2.5 mb-2 focus:ring-4 focus:outline-none text-white bg-yellow-600 hover:bg-yellow-500
+									focus:ring-yellow-600 disabled:opacity-50" @if(!$subscribed) disabled @endif>Upgrade your account</button>
 								</div>
 							</div>
 						</div>
@@ -197,11 +205,10 @@
                         },
                     }).then((response) => response.json()) //2
                     .then((data) => {
-                        this.formMessage = data.msg;
-                        console.log(data); //3
+                      toastr.success(data.message);
                     })
                     .catch(() => {
-                        this.formMessage = "Something went wrong.";
+                      toastr.error('Something went wrong.');
                     });
                 },
             };
@@ -242,8 +249,6 @@
                   selected: options[i].getAttribute('selected') != null ? options[i].getAttribute('selected') : false
                 });
               }
-
-              console.log(preSelected, this.options)
 
               preSelected.forEach((val, i) => {
                 this.options.forEach((item, idx) => {
