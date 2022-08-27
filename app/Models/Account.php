@@ -20,6 +20,10 @@ class Account extends Model
 
     final public const BRAND_POPULAR = ['comments', 'reactions', 'replies'];
 
+    final public const PLATFORM_SLACK = 'slack';
+
+    final public const PLATFORM_DISCORD = 'discord';
+
     protected $casts = [
         'brand_popular_by' => 'array'
     ];

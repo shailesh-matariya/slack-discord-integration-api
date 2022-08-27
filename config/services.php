@@ -45,7 +45,8 @@ return [
         'client_id' => env('DISCORD_CLIENT_ID', null),
         'secret' => env('DISCORD_SECRET', null),
         'redirect_url' => env('DISCORD_REDIRECT_URL', null),
-        'permission_id' => env('DISCORD_PERMISSION_ID', null)
+        'permission_id' => env('DISCORD_PERMISSION_ID', null),
+        'bot_token' => env('DISCORD_BOT_TOKEN', null),
     ],
 
     'stripe' => [
