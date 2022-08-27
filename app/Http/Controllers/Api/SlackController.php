@@ -51,7 +51,8 @@ class SlackController extends Controller
                     ->orWhereNull('thread_ts');
             })
             ->with(['attachments', 'replies'])
-            ->orderBy('ts', 'desc')
+            ->latest('id')
+//            ->orderBy('ts', 'desc')
             ->paginate(40);
 
         return response()->json([

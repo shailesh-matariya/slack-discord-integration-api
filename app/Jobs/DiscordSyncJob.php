@@ -111,7 +111,7 @@ class DiscordSyncJob implements ShouldQueue
     {
         // Sync channel or thread messages.
         $messageLimit = 100;
-        $afterMessage = 0;
+        $afterMessage = $accountChannel->messages()->latest('id')->first()?->message_id ?? 0;
         while (true) {
             $payload = [
                 'limit' => 100,
@@ -153,6 +153,7 @@ class DiscordSyncJob implements ShouldQueue
 
                         if (!empty($message->thread)) {
                             $messageModel->ts .= ".".rand(0,999999);
+                            $messageModel->thread_ts = $messageModel->ts;
                             $messageModel->save();
                             $this->syncMessages($accountChannel, $message->thread->id, $messageModel->ts);
                         }
