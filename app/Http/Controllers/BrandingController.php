@@ -14,7 +14,7 @@ class BrandingController extends Controller
 {
     public function index(Request $request)
     {
-        $account = Account::find(1);
+        $account = Auth::user()->account;
         $subscribed = Auth::user()->subscribed();
 
         return view('branding',compact('account', 'subscribed'));
@@ -46,7 +46,7 @@ class BrandingController extends Controller
             return response()->json(['msg' => $validator->errors()->first(), 'status' => false], 400);
         }
 
-        $account = Account::find($request->account_id);
+        $account = Auth::user()->account;
         $account->brand_popular_by = array_unique(array_filter(explode(',',$request->brand_popular_by)));
         $account->update($request->only(['brand_custom_domain', 'brand_embed_url', 'brand_custom_code', 'brand_primary_color', 'brand_secondary_color', 'brand_cname_records']));
 
@@ -58,15 +58,17 @@ class BrandingController extends Controller
                 Account::BRAND_LOGO_PATH,
                 $uploadedFile,
                 $filename
-            );
+	    );
             if ($path) {
-                if ($account->brand_logo && Storage::disk('public')->exists($account->brand_logo)){
-                    Storage::disk('public')->delete($account->brand_logo);
-                }
+                //if ($account->brand_logo && Storage::disk('public')->exists($account->brand_logo)){
+                //    Storage::disk('public')->delete($account->brand_logo);
+                //}
                 $account->brand_logo = $path;
-                $account->save();
-            }
-        }
+		$account->save();
+
+		dd($account->refresh()->toArray());
+	    }
+	}
 
         return response()->json([
             'status' => true,
