@@ -8,7 +8,7 @@
 						<div class="grid grid-cols-1 divide-y divide-gray-200 divide-solid">
 							<div class="bg-white">
 								<div class="mt-3 px-4 py-5 sm:p-6 bg-indigo-100 text-lg font-medium">
-									URL here
+									<a href="javascript:void(0)">URL Here</a>
 								</div>
 								<div class="px-4 py-5 sm:p-6">
 									<div class="flex">
