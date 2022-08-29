@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\DiscordSyncJob;
 use App\Jobs\SlackSyncJob;
 use App\Models\Account;
 use App\Models\AccountChannel;
@@ -10,6 +11,7 @@ use App\Models\User;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
@@ -19,7 +21,9 @@ class SettingsController extends Controller
     public function settings(): View
     {
         $account = Auth::user()->account;
-        config()->set('auth.account', $account);
+        if ($account) {
+            config()->set('auth.account', $account);
+        }
         $slackUrl = $this->getSlackUrl();
         $discordUrl = $this->getDiscordUrl();
         $channels = AccountChannel::query()->get();
@@ -75,46 +79,7 @@ class SettingsController extends Controller
 
         $account = new Account();
         $account->user()->associate($user);
-        $account->platform = 'slack';
-        $account->team_id = $response->team->id;
-        $account->workspace = $response->team->name;
-        $account->app_id = $response->app_id;
-        $account->auth_user = $response->authed_user->id;
-        $account->user_access_token = $response->authed_user->access_token;
-        $account->bot_access_token = $response->access_token;
-        $account->bot_user = $response->bot_user_id;
-        $account->bot_scope = $response->scope;
-        $account->user_scope = $response->authed_user->scope;
-        $account->save();
-
-        dispatch_sync(new SlackSyncJob($account));
-
-        return redirect(route('settings'));
-    }
-
-    public function discordCodeHandle(Request $request): RedirectResponse
-    {
-        $url = 'https://slack.com/api/oauth.v2.access';
-
-        $response = Http::get($url, [
-            'client_id' => config('services.slack.client_id'),
-            'client_secret' => config('services.slack.secret'),
-            'code' => $request->code,
-            'redirect_uri' => config('services.slack.redirect_url')
-        ]);
-
-        $response = json_decode($response->body());
-
-        $user = Auth::user();
-        $account = $user->account;
-
-        if ($account) {
-            return redirect(route('settings'));
-        }
-
-        $account = new Account();
-        $account->user()->associate($user);
-        $account->platform = 'slack';
+        $account->platform = Account::PLATFORM_SLACK;
         $account->team_id = $response->team->id;
         $account->workspace = $response->team->name;
         $account->app_id = $response->app_id;
@@ -145,6 +110,54 @@ class SettingsController extends Controller
         $state = 'patel.shailesh987@gmail.com' . '-' . bcrypt(1);
 
         return "https://discord.com/api/oauth2/authorize?response_type=code&client_id={$discordClientId}&scope={$scopes}&redirect_uri={$redirectUrl}&prompt=consent&state={$state}&permissions={$permissionId}";
+    }
+
+    public function discordCodeHandle(Request $request)
+    {
+        $url = 'https://discord.com/api/oauth2/token';
+
+        $response = Http::asForm()->post($url, [
+            'client_id' => config('services.discord.client_id'),
+            'client_secret' => config('services.discord.secret'),
+            'grant_type'=> 'authorization_code',
+            'code' => $request->code,
+            'redirect_uri' => config('services.discord.redirect_url'),
+        ]);
+
+        $response = json_decode($response->body());
+
+        if (isset($response->error)){
+            return response($response->error." : ".$response->error_description);
+        }
+
+        $user = Auth::user();
+        $account = $user->account;
+
+        if ($account) {
+            return redirect(route('settings'));
+        }
+
+        /*if (Account::where('team_id', $response->guild->id)->first()){
+            $account = Account::where('team_id',$response->guild->id)->first();
+        }else{
+            $account = new Account();
+        }*/
+
+        $account = new Account();
+        $account->user()->associate($user);
+        $account->platform = Account::PLATFORM_DISCORD;
+        $account->bot_scope = $response->scope;
+        $account->discord_access_token = $response->access_token;
+        $account->discord_refresh_token = $response->refresh_token;
+        $account->discord_access_token_expire_at = Carbon::now()->addSeconds($response->expires_in);
+        $account->workspace = $response->guild->name;
+        $account->team_id = $response->guild->id;
+        $account->save();
+
+        dispatch_sync(new DiscordSyncJob($account));
+
+//      return response()->json(['msg'=>'Check the database']);
+        return redirect(route('settings'));
     }
 
     public function setChannelVisibility(Request $request)
