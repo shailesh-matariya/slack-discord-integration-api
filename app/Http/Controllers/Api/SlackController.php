@@ -9,6 +9,7 @@ use App\Models\AccountUser;
 use App\Models\Message;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 
@@ -28,10 +29,11 @@ class SlackController extends Controller
     public function getUsers(Request $request): \Illuminate\Http\JsonResponse
     {
         $users =  AccountUser::query()->get();
+        $isSubscribed = config('auth.account')->user->subscribed();
         foreach ($users as $user) {
             if ($user->account->is_anonymize) {
-                $user->name = fake()->name;
-                $user->profile = 'https://ui-avatars.com/api/?name=' . urlencode($user->name);
+                $user->name = $isSubscribed ? fake()->name : $user->name;
+                $user->profile = $isSubscribed ? 'https://ui-avatars.com/api/?name=' . urlencode($user->name) : $user->profile;
             }
         }
 
@@ -64,19 +66,20 @@ class SlackController extends Controller
     //Get brand config
     public function getBrandConfig(Request $request): \Illuminate\Http\JsonResponse
     {
+        $isSubscribed = config('auth.account')->user->subscribed();
         return response()->json([
             'status' => true,
-            'brand_config' => config('auth.account')->only([
-                'brand_popular_by',
-                'brand_logo',
-                'brand_logo_url',
-                'brand_primary_color',
-                'brand_secondary_color',
-                'brand_custom_code',
-                'brand_cname_records',
-                'brand_embed_url',
-                'brand_custom_domain'
-            ])
+            'brand_config' => [
+                'brand_popular_by' =>$isSubscribed ? config('auth.account')->brand_popular_by : null,
+                'brand_logo' =>$isSubscribed ? config('auth.account')->brand_logo : null,
+                'brand_logo_url' =>$isSubscribed ? config('auth.account')->brand_logo_url : null,
+                'brand_primary_color' =>$isSubscribed ? config('auth.account')->brand_primary_color : null,
+                'brand_secondary_color' =>$isSubscribed ? config('auth.account')->brand_secondary_color : null,
+                'brand_custom_code' =>$isSubscribed ? config('auth.account')->brand_custom_code : null,
+                'brand_cname_records' =>$isSubscribed ? config('auth.account')->brand_cname_records : null,
+                'brand_embed_url' =>$isSubscribed ? config('auth.account')->brand_embed_url : null,
+                'brand_custom_domain' =>$isSubscribed ? config('auth.account')->brand_custom_domain : null
+            ]
         ]);
     }
 }
