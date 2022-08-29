@@ -60,13 +60,11 @@ class BrandingController extends Controller
                 $filename
 	    );
             if ($path) {
-                //if ($account->brand_logo && Storage::disk('public')->exists($account->brand_logo)){
-                //    Storage::disk('public')->delete($account->brand_logo);
-                //}
+                if ($account->brand_logo && Storage::disk('public')->exists($account->brand_logo)){
+                    Storage::disk('public')->delete($account->brand_logo);
+                }
                 $account->brand_logo = $path;
 		$account->save();
-
-		dd($account->refresh()->toArray());
 	    }
 	}
 
