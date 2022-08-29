@@ -7,12 +7,14 @@
 					<div class="grid grid-cols-1 gap-4">
 						<div class="grid grid-cols-1 divide-y divide-gray-200 divide-solid">
 							<div class="bg-white">
-								<div class="mt-3 px-4 py-5 sm:p-6 bg-indigo-100 text-lg font-medium">
-									<a href="javascript:void(0)">URL Here</a>
+								@if ($account)
+								<div class="mt-3 px-4 py-5 sm:p-6 bg-indigo-100 text-indigo-900 text-lg font-medium">
+									<a href="{{config('app.frontend_url').'/t/'.$account->team_id}}" target="_blank">{{parse_url(config('app.frontend_url'), PHP_URL_HOST).'/t/'.$account->team_id}}</a>
 								</div>
+								@endif
 								<div class="px-4 py-5 sm:p-6">
 									<div class="flex">
-                                        @if ($account)
+                                        @if ($account?->platform === 'slack')
                                             <div class="grow">
                                                 <h3 class="text-lg leading-6 font-medium text-gray-900">
                                                     Slack integration
@@ -22,10 +24,6 @@
                                                         <path fill="currentColor" d="M0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256zM371.8 211.8C382.7 200.9 382.7 183.1 371.8 172.2C360.9 161.3 343.1 161.3 332.2 172.2L224 280.4L179.8 236.2C168.9 225.3 151.1 225.3 140.2 236.2C129.3 247.1 129.3 264.9 140.2 275.8L204.2 339.8C215.1 350.7 232.9 350.7 243.8 339.8L371.8 211.8z"></path>
                                                     </svg>
                                                     Done
-                                                    <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="circle-exclamation" class="svg-inline--fa fa-circle-exclamation h-5 w-5 mr-1" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" color="red">
-                                                        <path fill="currentColor" d="M256 0C114.6 0 0 114.6 0 256s114.6 256 256 256s256-114.6 256-256S397.4 0 256 0zM232 152C232 138.8 242.8 128 256 128s24 10.75 24 24v128c0 13.25-10.75 24-24 24S232 293.3 232 280V152zM256 400c-17.36 0-31.44-14.08-31.44-31.44c0-17.36 14.07-31.44 31.44-31.44s31.44 14.08 31.44 31.44C287.4 385.9 273.4 400 256 400z"></path>
-                                                    </svg>
-                                                    Error
                                                 </h3>
                                                 <div class="mt-2 sm:flex sm:items-start sm:justify-between">
                                                     <div class="max-w-xl text-sm text-gray-500">
@@ -33,6 +31,23 @@
                                                     </div>
                                                 </div>
                                             </div>
+										@elseif($account?->platform === 'discord')
+											<div class="grow">
+												<h3 class="text-lg leading-6 font-medium text-gray-900">
+													Discord integration
+													<span class="text-gray-300"> | </span>
+													<svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="circle-check" class="svg-inline--fa fa-circle-check h-5 w-5 mr-1 inline"
+														 role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" color="green">
+														<path fill="currentColor" d="M0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256zM371.8 211.8C382.7 200.9 382.7 183.1 371.8 172.2C360.9 161.3 343.1 161.3 332.2 172.2L224 280.4L179.8 236.2C168.9 225.3 151.1 225.3 140.2 236.2C129.3 247.1 129.3 264.9 140.2 275.8L204.2 339.8C215.1 350.7 232.9 350.7 243.8 339.8L371.8 211.8z"></path>
+													</svg>
+													Done
+												</h3>
+												<div class="mt-2 sm:flex sm:items-start sm:justify-between">
+													<div class="max-w-xl text-sm text-gray-500">
+														<p>Connect to Discord to fetch conversation.</p>
+													</div>
+												</div>
+											</div>
                                         @else
                                             <div class="grow">
                                                 <h3 class="text-lg leading-6 font-medium text-gray-900">
@@ -50,7 +65,7 @@
 										<div class="flex flex-col items-center gap-2">
 											<div class="grid grid-cols-1 gap-4">
 												@if (! $account || $account?->platform === 'slack')
-													<a href="{{ $slackUrl }}" class="flex rounded-md border p-2 justify-around border-gray-300 text-base w-48">
+													<a href="{{ $slackUrl }}" class="flex rounded-md border p-2 justify-around border-gray-300 text-base w-52">
 														<div class="flex gap-2 items-center">
 															<svg width="20" height="20" viewBox="0 0 54 54" xmlns="http://www.w3.org/2000/svg">
 																<g fill="none" fill-rule="evenodd">
@@ -70,7 +85,7 @@
 												@endif
 
 												@if (! $account || $account?->platform === 'discord')
-													<a href="{{ $discordUrl }}" class="flex rounded-md border p-2 justify-around border-gray-300 text-base w-48">
+													<a href="{{ $discordUrl }}" class="flex rounded-md border p-2 justify-around border-gray-300 text-base w-52">
 														<div class="flex gap-2 items-center">
 															<svg width="20" height="20" viewBox="0 0 71 55" fill="none" xmlns="http://www.w3.org/2000/svg">
 																<g clip-path="url(#clip0)">

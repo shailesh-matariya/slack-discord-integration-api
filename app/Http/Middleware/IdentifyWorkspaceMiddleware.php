@@ -22,7 +22,7 @@ class IdentifyWorkspaceMiddleware
     {
 //        $account = Account::query()->where([['platform', '=', $request['platform']], ['team_id', '=' , $request['team_id']]])->first();
         $account = null;
-        $company_domain = parse_url(config('app.company_slack_url'), PHP_URL_HOST);
+        $company_domain = parse_url(config('app.frontend_url'), PHP_URL_HOST);
         $domain = parse_url($request->input('url'), PHP_URL_HOST);
 
         if ($domain == $company_domain) {
