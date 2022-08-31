@@ -24,7 +24,7 @@ class BrandingController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'account_id' => ['required', 'exists:accounts,id'],
-            'brand_custom_domain' => ['nullable', 'string', new Domain],
+            'brand_custom_domain' => ['nullable', 'string', 'url'],
             'brand_embed_url' => ['nullable', 'url', Rule::unique('accounts','brand_embed_url')->ignore($request->account_id)],
             'brand_custom_code' => ['nullable'],
             'brand_primary_color' => ['nullable'],
@@ -43,7 +43,7 @@ class BrandingController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['msg' => $validator->errors()->first(), 'status' => false], 400);
+            return response()->json(['message' => $validator->errors()->first(), 'status' => false], 400);
         }
 
         $account = Auth::user()->account;

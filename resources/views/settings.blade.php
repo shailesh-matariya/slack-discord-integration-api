@@ -9,7 +9,10 @@
 							<div class="bg-white">
 								@if ($account)
 								<div class="mt-3 px-4 py-5 sm:p-6 bg-indigo-100 text-indigo-900 text-lg font-medium">
-									<a href="{{config('app.frontend_url').'/t/'.$account->team_id}}" target="_blank">{{parse_url(config('app.frontend_url'), PHP_URL_HOST).'/t/'.$account->team_id}}</a>
+									<a href="{{$account->brand_custom_domain && $account->brand_custom_domain != '' ? $account->brand_custom_domain : config('app.frontend_url').'/t/'.$account->team_id}}" target="_blank">
+										{{$account->brand_custom_domain && $account->brand_custom_domain != '' ? $account->brand_custom_domain : parse_url(config('app.frontend_url'),	PHP_URL_HOST)
+										.'/t/'.$account->team_id}}
+									</a>
 								</div>
 								@endif
 								<div class="px-4 py-5 sm:p-6">

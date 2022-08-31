@@ -39,7 +39,8 @@ class SlackController extends Controller
 
         return response()->json([
             'status' => true,
-            'user_collection' => $users
+            'user_collection' => $users,
+            'platform' => config('auth.account')->platform
         ]);
     }
 
