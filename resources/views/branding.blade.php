@@ -13,7 +13,7 @@
 										<input type="text" name="brand_custom_domain" x-model="formData.brand_custom_domain" class="disabled:opacity-50 flex-1 min-w-0 block w-full px-3 py-2
 										rounded
 										focus:ring-indigo-500
-										focus:border-indigo-500 sm:text-sm border-gray-300" placeholder="https://yourwebsite.com" @if($subscribed) disabled readonly value @endif>
+										focus:border-indigo-500 sm:text-sm border-gray-300" placeholder="https://yourwebsite.com" @if(!$subscribed) disabled readonly value @endif>
 									</div>
 									<label class="block text-sm font-bold leading-5 mb-1 mt-3">CName Records</label>
 									<div class="text-sm mb-2 text-gray-600" x-text="cname"></div>
@@ -46,7 +46,7 @@
 									<div class="text-sm mb-2 text-gray-600">Add custom code to be inserted before HEAD tag on your own generated site.</div>
 									<div class="mt-1 relative rounded-md shadow-sm">
 										<textarea name="brand_custom_code" x-model="formData.brand_custom_code" rows="3" class="shadow-sm block w-full focus:ring-indigo-500 focus:border-indigo-500
-										sm:text-sm border border-gray-300 rounded-md disabled:opacity-50" @if($subscribed) disabled readonly @endif></textarea>
+										sm:text-sm border border-gray-300 rounded-md disabled:opacity-50" @if(!$subscribed) disabled readonly @endif></textarea>
 									</div>
 								</div>
 								<div class="p-3 mb-3 rounded border-gray-200 border-solid border bg-slate-50">
@@ -58,7 +58,7 @@
 											<div class="mt-1 relative rounded-md shadow-sm">
 												<input type="color" name="brand_primary_color" x-model="formData.brand_primary_color" class="disabled:opacity-50 h-9 py-0 px-0.5 bg-white
 												focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm
-										border-gray-300 rounded-md" value="#E2E2E2" @if($subscribed) disabled readonly @endif>
+										border-gray-300 rounded-md" value="#E2E2E2" @if(!$subscribed) disabled readonly @endif>
 											</div>
 										</div>
 
@@ -67,7 +67,7 @@
 											<div class="mt-1 relative rounded-md shadow-sm">
 												<input type="color" name="brand_secondary_color" x-model="formData.brand_secondary_color" class="disabled:opacity-50 h-9 py-0 px-0.5 bg-white
 												focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm
-										border-gray-300 rounded-md" value="#E2E2E2" @if($subscribed) disabled readonly @endif>
+										border-gray-300 rounded-md" value="#E2E2E2" @if(!$subscribed) disabled readonly @endif>
 											</div>
 										</div>
 									</div>
@@ -75,12 +75,12 @@
 								<div class="p-3 mb-3 rounded border-gray-200 border-solid border bg-slate-50">
 									<label for="logo" class="block text-sm font-bold leading-5 mb-1">Logo</label>
 									<div class="text-sm mb-2 text-gray-600">Logo of your brand.</div>
-									<input x-ref="brand_logo" type="file" name="brand_logo" style="display:none" class="disabled:opacity-50" @if($subscribed) disabled readonly @endif>
+									<input x-ref="brand_logo" type="file" name="brand_logo" style="display:none" class="disabled:opacity-50" @if(!$subscribed) disabled readonly @endif>
 									<button
 										@click="$refs.brand_logo.click()"
 										type="button"
 										class="font-medium rounded-lg text-sm px-5 py-2.5 mb-2 focus:ring-4 focus:outline-none text-black bg-gray-200 disabled:opacity-50"
-										@if($subscribed) disabled readonly @endif>Upload file
+										@if(!$subscribed) disabled readonly @endif>Upload file
 									</button>
 								</div>
 								<div class="p-3 mb-3 rounded border-gray-200 border-solid border bg-slate-50">
@@ -93,10 +93,10 @@
 									</select>
 
 									<div x-data="dropdown()" x-init="loadOptions()" class="w-full md:w-1/2 flex flex-col items-center">
-										<input name="values" type="hidden" x-bind:value="selectedValues()" class="disabled:opacity-50" @if($subscribed) disabled readonly @endif>
-										<div class="{{ $subscribed ? 'opacity-50' : ''}} inline-block relative w-80">
+										<input name="values" type="hidden" x-bind:value="selectedValues()" class="disabled:opacity-50" @if(!$subscribed) disabled readonly @endif>
+										<div class="{{ !$subscribed ? 'opacity-50' : ''}} inline-block relative w-80">
 											<div class="flex flex-col items-center relative">
-												<div x-on:click="open" class="{{ $subscribed ? 'pointer-events-none' : ''}} w-full">
+												<div x-on:click="open" class="{{ !$subscribed ? 'pointer-events-none' : ''}} w-full">
 													<div class="my-2 p-1 flex border border-gray-200 bg-white rounded disabled:opacity-50">
 														<div class="flex flex-auto flex-wrap">
 															<template x-for="(option,index) in selected" :key="options[option].value">
@@ -169,7 +169,7 @@
 								</div>
 								<div class="flex justify-end">
 									<button type="submit" class="font-medium rounded-lg text-sm px-5 py-2.5 mb-2 focus:ring-4 focus:outline-none text-white bg-yellow-600 hover:bg-yellow-500
-									focus:ring-yellow-600 disabled:opacity-50" @if($subscribed) disabled @endif>Update settings
+									focus:ring-yellow-600 disabled:opacity-50" @if(!$subscribed) disabled @endif>Update settings
 									</button>
 								</div>
 							</div>
