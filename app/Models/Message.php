@@ -31,6 +31,11 @@ class Message extends Model
         return $this->hasMany(Attachment::class, 'message_id');
     }
 
+    public function reactions(): HasMany
+    {
+        return $this->hasMany(Reaction::class, 'message_id');
+    }
+
     public function replies(): HasMany
     {
         return $this->hasMany(self::class, 'thread_ts', 'thread_ts')->whereRaw('ts != thread_ts');

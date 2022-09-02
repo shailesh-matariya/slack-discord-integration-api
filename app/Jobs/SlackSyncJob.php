@@ -7,6 +7,7 @@ use App\Models\AccountChannel;
 use App\Models\AccountUser;
 use App\Models\Attachment;
 use App\Models\Message;
+use App\Models\Reaction;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -136,6 +137,19 @@ class SlackSyncJob implements ShouldQueue
                     $this->syncThreadMessages($messageModel, $accountChannel);
                 }
 
+                if (! empty($message->reactions)) {
+                    $reactions = [];
+                    foreach ($message->reactions as $reaction) {
+                        $reactions[] = new Reaction([
+                            'name' => $reaction->name,
+                            'users' => $reaction->users,
+                            'count' => $reaction->count,
+                        ]);
+                    }
+
+                    $messageModel->attachments()->saveMany($reactions);
+                }
+
                 if (! empty($message->files)) {
                     $attachments = [];
                     foreach ($message->files as $file) {
@@ -198,6 +212,19 @@ class SlackSyncJob implements ShouldQueue
                 $messageModel->message = $message->text;
                 $messageModel->save();
 
+                if (! empty($message->reactions)) {
+                    $reactions = [];
+                    foreach ($message->reactions as $reaction) {
+                        $reactions[] = new Reaction([
+                            'name' => $reaction->name,
+                            'users' => $reaction->users,
+                            'count' => $reaction->count,
+                        ]);
+                    }
+
+                    $messageModel->attachments()->saveMany($reactions);
+                }
+
                 if (! empty($message->files)) {
                     $attachments = [];
                     foreach ($message->files as $file) {
@@ -223,5 +250,10 @@ class SlackSyncJob implements ShouldQueue
         if ($messageResponse->has_more) {
             $this->syncThreadMessages($message, $accountChannel);
         }
+    }
+
+    private function saveReactions(Message $message)
+    {
+        dd($message);
     }
 }

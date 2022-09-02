@@ -53,7 +53,7 @@ class SlackController extends Controller
                 $q->whereRaw('ts = thread_ts')
                     ->orWhereNull('thread_ts');
             })
-            ->with(['attachments', 'replies'])
+            ->with(['attachments', 'replies.reactions', 'reactions'])
             ->latest('id')
 //            ->orderBy('ts', 'desc')
             ->paginate(40);
