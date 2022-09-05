@@ -47,17 +47,30 @@ class SlackController extends Controller
     //Get Slack chat from particular channel
     public function getChannelMessages(Request $request): \Illuminate\Http\JsonResponse
     {
-        $messages = Message::query()
+        $account = config('auth.account');
+        $query = Message::query()
             ->where('account_channel_id', $request['channel_id'])
             ->where(function (Builder $q) {
                 $q->whereRaw('ts = thread_ts')
                     ->orWhereNull('thread_ts');
             })
             ->with(['attachments', 'replies.reactions', 'reactions'])
-            ->latest('id')
-//            ->orderBy('ts', 'desc')
-            ->paginate(40);
+            ->withCount(['replies', 'reactions']);
 
+        if ($account->brand_popular_by)
+        {
+            if (count($account->brand_popular_by) == 1 && $account->brand_popular_by['replies']) {
+                $query->orderByDesc('replies_count');
+            } elseif (count($account->brand_popular_by) == 1 && $account->brand_popular_by['reactions']) {
+                $query->orderByDesc('reactions_count');
+            } else {
+                $query->orderByDesc('replies_count')
+                    ->orderByDesc('reactions_count');
+            }
+        }
+
+        $messages = $query->latest('id')
+        ->paginate(40);
         return response()->json([
             'status' => true,
             'message_collection' => $messages
