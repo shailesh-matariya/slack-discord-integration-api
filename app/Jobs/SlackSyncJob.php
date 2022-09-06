@@ -69,7 +69,7 @@ class SlackSyncJob implements ShouldQueue
             }
 
             $accountUser->username = $user->name;
-            $accountUser->name = $user->real_name;
+            $accountUser->name = $user->real_name??$user->name;
             $accountUser->profile = $user->profile->image_72;
             $accountUser->save();
         }

@@ -87,7 +87,7 @@
 									<label for="logo" class="block text-sm font-bold leading-5 mb-1">Most popular by</label>
 									<select id="brand_popular_by" name="brand_popular_by" x-model="formData.brand_popular_by"
 											class="mt-1 block w-full bg-white border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-										<option value="comments">Comments</option>
+{{--										<option value="comments">Comments</option>--}}
 										<option value="reactions">Reactions</option>
 										<option value="replies">Replies</option>
 									</select>

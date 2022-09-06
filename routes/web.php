@@ -66,4 +66,8 @@ Route::middleware([
     Route::get('subscribe/success', [SubscriptionController::class, 'subscribeSuccess'])->name('subscribe.success');
     Route::get('subscribe/fail', [SubscriptionController::class, 'subscribeFail'])->name('subscribe.fail');
     Route::get('subscribe/cancel', [SubscriptionController::class, 'subscribeCancel'])->name('subscribe.cancel');
+
+    Route::post('/remove-account', [SettingsController::class, 'removeAccount'])
+        ->name('removeAccount')
+        ->withoutMiddleware(VerifyCsrfToken::class);
 });

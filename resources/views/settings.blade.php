@@ -114,6 +114,18 @@
 														</div>
 													</a>
 												@endif
+													@if($account)
+														<a href="javascript:void(0)" x-data="" class="flex rounded-md border p-2 justify-around border-gray-300 text-base w-52
+														text-white bg-red-600" @click="removeAccount()">
+															<div class="flex gap-2 items-center">
+																<svg version="1.1" width="20" height="20" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+																	 x="0px" fill="#ffffff"
+																	 y="0px"
+																	 viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve"><g><g><path d="M60.236,210.824L90.354,512h331.294l30.118-301.176H60.236z M188.236,459.294H143.06V263.529h45.176V459.294z M278.589,459.294h-45.177V263.529h45.177V459.294z M368.942,459.294h-45.176V263.529h45.176V459.294z"/></g></g><g><g><path d="M391.53,90.353h-52.706v-7.529C338.824,37.155,301.67,0,256.001,0s-82.824,37.155-82.824,82.824v7.529h-52.706c-44.767,0-81.908,32.565-89.08,75.294h449.218C473.438,122.918,436.297,90.353,391.53,90.353z M293.648,90.353h-75.294v-7.529c0-20.759,16.888-37.647,37.647-37.647s37.647,16.888,37.647,37.647V90.353z"/></g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg>
+																<p class="whitespace-nowrap">Remove account</p>
+															</div>
+														</a>
+													@endif
 											</div>
 										</div>
 									</div>
@@ -392,6 +404,24 @@
           }).then((response) => response.json()) //2
             .then((data) => {
               toastr.success(data.message);
+            })
+            .catch(() => {
+              toastr.error('Something went wrong.');
+            });
+		}
+
+		function removeAccount() {
+          console.log('RemoveAccount');
+          fetch('{{route('removeAccount')}}', {
+            method: 'POST',
+            body: JSON.stringify({}),
+            headers: {
+              'Content-type': 'application/json; charset=UTF-8',
+            },
+          }).then((response) => response.json()) //2
+            .then((data) => {
+              setTimeout(() => location.reload(), 1500)
+              toastr.success('Account removed successfully!');
             })
             .catch(() => {
               toastr.error('Something went wrong.');

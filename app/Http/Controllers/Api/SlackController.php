@@ -59,13 +59,13 @@ class SlackController extends Controller
 
         if ($account->brand_popular_by)
         {
-            if (count($account->brand_popular_by) == 1 && $account->brand_popular_by['replies']) {
+            if (count($account->brand_popular_by) === 1 && in_array('replies', $account->brand_popular_by)) {
                 $query->orderByDesc('replies_count');
-            } elseif (count($account->brand_popular_by) == 1 && $account->brand_popular_by['reactions']) {
+            } elseif (count($account->brand_popular_by) === 1 && in_array('reactions', $account->brand_popular_by)) {
                 $query->orderByDesc('reactions_count');
             } else {
-                $query->orderByDesc('replies_count')
-                    ->orderByDesc('reactions_count');
+                $query->orderByDesc('reactions_count')
+                    ->orderByDesc('replies_count');
             }
         }
 

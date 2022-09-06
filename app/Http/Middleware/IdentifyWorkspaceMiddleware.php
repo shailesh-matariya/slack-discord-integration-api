@@ -18,7 +18,7 @@ class IdentifyWorkspaceMiddleware
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function handle(Request $request, Closure $next): \Illuminate\Http\JsonResponse
+    public function handle(Request $request, Closure $next)
     {
 //        $account = Account::query()->where([['platform', '=', $request['platform']], ['team_id', '=' , $request['team_id']]])->first();
         $account = null;

@@ -204,4 +204,18 @@ class SettingsController extends Controller
             'message' => 'Saved successfully!'
         ]);
     }
+
+    public  function removeAccount(): \Illuminate\Http\JsonResponse
+    {
+
+        $account = Auth::user()->account;
+        config()->set('auth.account', $account);
+        $account->removeAccount();
+
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Removed successfully!'
+        ]);
+    }
 }

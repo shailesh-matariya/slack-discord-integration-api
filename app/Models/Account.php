@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
@@ -13,6 +14,7 @@ use Illuminate\Support\Facades\Storage;
 class Account extends Model
 {
     use HasFactory;
+    use SoftDeletes;
 
     protected $table = 'accounts';
 
@@ -20,7 +22,7 @@ class Account extends Model
 
     final public const BRAND_LOGO_PATH = 'branding_logos';
 
-    final public const BRAND_POPULAR = ['comments', 'reactions', 'replies'];
+    final public const BRAND_POPULAR = ['reactions', 'replies'];
 
     final public const PLATFORM_SLACK = 'slack';
 
@@ -51,6 +53,11 @@ class Account extends Model
         return $this->hasMany(AccountUser::class);
     }
 
+    public function channels(): HasMany
+    {
+        return $this->hasMany(AccountChannel::class);
+    }
+
     function refreshDiscordExpiredToken()
     {
         if ($this->platform == Account::PLATFORM_DISCORD &&
@@ -79,4 +86,18 @@ class Account extends Model
             }
         }
     }
+
+    function removeAccount()
+    {
+        foreach ($this->channels as $channel) {
+            foreach ($channel->messages as $message) {
+                $message->attachments()->delete();
+                $message->reactions()->delete();
+            }
+            $channel->messages()->delete();
+        }
+        $this->channels()->delete();
+        $this->users()->delete();
+        $this->delete();
+        config('auth.account', null);    }
 }
