@@ -16,7 +16,7 @@ class BrandingController extends Controller
     {
         $account = Auth::user()->account;
         $subscribed = Auth::user()->subscribed();
-
+//        dd($account->getEmbedScriptURL());
         return view('branding',compact('account', 'subscribed'));
     }
 

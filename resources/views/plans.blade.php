@@ -1,7 +1,7 @@
 <x-app-layout>
-	<div class="max-w-4xl mx-auto flex flex-col md:px-8 xl:px-0">
+	<div class="max-w-6xl mx-auto flex flex-col md:px-8 xl:px-0">
 		<div class="py-10">
-			<div class="max-w-4xl mx-auto px-4">
+			<div class="max-w-6xl mx-auto px-4">
 				<div class="py-6">
 					<div class="mx-auto">
 						<div class="sm:flex sm:flex-col sm:align-center">

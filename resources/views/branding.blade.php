@@ -1,7 +1,7 @@
 <x-app-layout>
-	<div x-data class="max-w-4xl mx-auto flex flex-col md:px-8 xl:px-0">
+	<div x-data class="max-w-6xl mx-auto flex flex-col md:px-8 xl:px-0">
 		<div class="py-10">
-			<div class="max-w-4xl mx-auto px-4">
+			<div class="max-w-6xl mx-auto px-4">
 				<h1 class="text-3xl font-extrabold text-gray-900">Branding</h1>
 				<div class="py-6">
 					<form action="#" x-data="brandingForm()" @submit.prevent="submitForm">
@@ -37,7 +37,9 @@
 												</svg>
 												<span class="tooltip-text" id="myTooltip">Copy to clipboard</span>
 											</a>
-											<code x-text="embedCode" id="embedCode"></code>
+											<code id="embedCode">
+												{{ $account->getEmbedScriptURL() }}
+											</code>
 										</pre>
 									</div>
 								</div>
@@ -290,6 +292,7 @@
       }
 
       function getEmbedCode() {
+        return '{{$account->getEmbedScriptURL()}}';
         const embedCode = function em() {
           const t = document.getElementsByTagName("body");
           let e = document.createElement("embed");
@@ -300,6 +303,10 @@
         });
         return embedCode.toString();
       }
+
+      function getEmbedScript() {
+
+	  }
 
       function copyToClipboard() {
         const codeTag = document.getElementById('embedCode');

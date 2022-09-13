@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class Account extends Model
 {
@@ -99,5 +100,22 @@ class Account extends Model
         $this->channels()->delete();
         $this->users()->delete();
         $this->delete();
-        config('auth.account', null);    }
+        config('auth.account', null);
+    }
+
+    function getEmbedScriptURL(): string
+    {
+        if (! $this->brand_embed_url) {
+            $embedCode = 'function em() { const t = document.getElementsByTagName("body"); let e = document.createElement("embed"); e.setAttribute("width", "100%"), e.setAttribute("height", "100%"), e.setAttribute("src", "'.config("app.frontend_url").'/t/'.$this->team_id.'"), t[0].style.cssText = "height: 100vh; margin:0", t[0].innerHTML = "", t[0].appendChild(e) }';
+            $path = "customJS/" . Str::random(32) .".js";
+            if (!Storage::exists($path)) {
+                Storage::put($path, $embedCode);
+            }
+
+            $this->brand_embed_url = $path;
+            $this->save();
+        }
+
+        return "<script src=\"" . Storage::url($this->brand_embed_url) . "\"></script>";
+    }
 }

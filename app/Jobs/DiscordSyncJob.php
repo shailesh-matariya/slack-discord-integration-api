@@ -129,6 +129,9 @@ class DiscordSyncJob implements ShouldQueue
             if ($messages && is_array($messages) && !empty($messages)) {
 
                 foreach ($messages as $message) {
+                    if ($message->type == 21) {
+                        continue;
+                    }
                     $user = AccountUser::query()->where('userId', $message->author->id)->first();
 
                     if ($user) {
