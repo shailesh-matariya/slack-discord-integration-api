@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\SlackController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -16,4 +17,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+//Slack
+Route::middleware('workspace')->group(function() {
+    Route::get('/slack-channels', [SlackController::class, 'getChannels']);
+    Route::get('/slack-users', [SlackController::class, 'getUsers']);
+    Route::get('/channel-messages', [SlackController::class, 'getChannelMessages']);
+    Route::get('/brand-config', [SlackController::class, 'getBrandConfig']);
 });
